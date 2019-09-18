@@ -243,33 +243,33 @@ class _MyWalletPage extends State<MyWalletPage>{
                     ),
 
                     /*银行卡*/
-                    Padding(padding: EdgeInsets.only(top: 20,bottom: 20,left: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Image.asset(ImageHelper.wrapAssets("id_card.png"),width: 21,height: 21),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5),
-                            child:Text("银行卡",style: TextStyle(fontSize: 15,color: Color.fromARGB(255, 42,60,112))),
+                    GestureDetector(
+                      child:Padding(padding: EdgeInsets.only(top: 20,bottom: 20,left: 10),
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(ImageHelper.wrapAssets("id_card.png"),width: 21,height: 21),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child:Text("银行卡",style: TextStyle(fontSize: 15,color: Color.fromARGB(255, 42,60,112))),
 
-                          ),
-                          Expanded(child:Container(
-                            alignment: Alignment.centerRight,
+                            ),
+                            Expanded(child:Container(
+                              alignment: Alignment.centerRight,
 
-                            child: Text("已绑定0张银行卡",style: TextStyle(fontSize: 15,color: Color.fromARGB(255, 154,159,180)),),
-                          )
-                          ),
-                          Padding(padding: EdgeInsets.only(right: 10),
-                            child:Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 14,height: 17),
+                              child: Text("已绑定0张银行卡",style: TextStyle(fontSize: 15,color: Color.fromARGB(255, 154,159,180)),),
+                            )
+                            ),
+                            Padding(padding: EdgeInsets.only(right: 10),
+                              child:Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 14,height: 17),
 
-                          ),
-
-
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-
+                      onTap: (){
+                        NavigatorUtil.goMyBankCardListPage(context);
+                    }),
                   ],
-
                 ),
             ),
           ),

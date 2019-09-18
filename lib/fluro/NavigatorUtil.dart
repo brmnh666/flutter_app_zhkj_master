@@ -112,4 +112,22 @@ class NavigatorUtil{
         transition: TransitionType.inFromRight);
   }
 
+  ///我的银行卡
+  static void goMyBankCardListPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.mycardlist,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
+
+  ///添加银行卡
+  static void goAddBankCardPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.addbankcard,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
+
 }

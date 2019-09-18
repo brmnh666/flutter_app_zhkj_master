@@ -7,6 +7,8 @@ import 'package:flutter_app_zhkj_master/page/main/me/info_manage/info_manage_pag
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/mod_password_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/update_service_area.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/update_shopname_Page.dart';
+import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/add_bankcard_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/my_bankcard_list_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/my_wallet_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/recharge_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/selectbank_page.dart';
@@ -116,3 +118,17 @@ var webpageHandler=Handler(
       return WebPage();
     }
 );
+
+///我的银行卡页面
+var mycardlistHandler=Handler(
+    handlerFunc:(BuildContext context, Map<String, List<String>> params){
+      return BankCardList();
+    }
+);
+
+///添加银行卡
+ var addbankcardHandler=Handler(
+     handlerFunc:(BuildContext context, Map<String, List<String>> params){
+       return AddBankCardPage();
+     }
+ );

@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 class MyUtil{
   static String getDateAndTime() {
     DateTime now = new DateTime.now();
@@ -125,6 +127,58 @@ class MyUtil{
     }
     else{
       return "ic_zanwu.png";
+    }
+  }
+
+  /*设置银行卡背景颜色*/
+  static Color BackGroundColor(String bankname){
+    if(bankname.contains("光大")){
+      return Color.fromARGB(255,139,101,139);
+    }
+    if(bankname.contains("广发")){
+      return Color.fromARGB(255,178,34,34);
+    }
+    if(bankname.contains("工商")){
+      return Color.fromARGB(255,238,99,99);
+    }
+    if(bankname.contains("华夏")){
+      return Color.fromARGB(255,255,0,0);
+    }
+    if(bankname.contains("建设")){
+      return Color.fromARGB(255,30,144,255);
+    }
+    if(bankname.contains("交通")){
+      return Color.fromARGB(255,65,105,225);
+    }
+    if(bankname.contains("民生")){
+      return Color.fromARGB(255,0,191,255);
+    }
+    if(bankname.contains("宁波")){
+      return Color.fromARGB(255,255,246,143);
+    }
+    if(bankname.contains("农业")){
+      return Color.fromARGB(255,0,206,209);
+    }
+    if(bankname.contains("浦发")){
+      return Color.fromARGB(255,0,0,205);
+    }
+    if(bankname.contains("兴业")){
+      return Color.fromARGB(255,30,144,255);
+    }
+    if(bankname.contains("邮政")){
+      return Color.fromARGB(255,0,100,0);
+    }
+    if(bankname.contains("招商")){
+      return Color.fromARGB(255,238,121,66);
+    }
+    if(bankname.contains("浙商")){
+      return Color.fromARGB(255,255,215,0);
+    }
+    if(bankname.contains("中国银行")){
+      return Color.fromARGB(255,139,58,58);
+    }
+    if(bankname.contains("中信")){
+      return Color.fromARGB(255,238,44,44);
     }
   }
 
