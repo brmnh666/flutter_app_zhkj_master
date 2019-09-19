@@ -2,6 +2,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 
 
 class MyShopItemPage extends StatefulWidget{
@@ -18,7 +20,13 @@ class _MyShopItemPage extends State<MyShopItemPage>{
     // TODO: implement build
     return Scaffold(
       body: Center(
-        child: Text("配件商城"),
+        child: Store.connect<UserModel>(
+            builder: (context, UserModel snapshot, child) {
+              return Text(
+                  '${snapshot.username}'
+              );
+            }
+        ),
       ),
     );
   }

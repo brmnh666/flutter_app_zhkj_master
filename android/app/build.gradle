@@ -1,3 +1,4 @@
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -66,6 +67,9 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+        }
+        debug{
             signingConfig signingConfigs.release
         }
 

@@ -2,18 +2,22 @@ import 'dart:io';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'bean/info_result.dart';
 import 'eventbus/global_eventbus.dart';
 import 'fluro/application.dart';
 import 'fluro/routes.dart';
+import 'http/http_utils.dart';
 import 'manager/resource_mananger.dart';
 import 'page/main/home/home_page.dart';
 import 'page/main/me/me_page.dart';
 import 'page/main/message/message_page.dart';
 import 'page/main/shop/shop_page.dart';
 import 'provider/index.dart';
+import 'provider/model/UserModel.dart';
 
 
 void main(){
@@ -59,6 +63,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  @override
+  void initState() {
+    super.initState();
+    SpHelper.getUserName().then((username)=>
+      _getInfo(username)
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +77,44 @@ class _MyHomePageState extends State<MyHomePage> {
         bottomNavigationBar: BottomBarPage(),
     );
   }
+
+  /*获取个人信息*/
+  _getInfo(String UserID ,{String limit="1"}) async{
+    var map=Map();
+    map["UserID"]=UserID;
+    map["limit"]=limit;
+    await HttpUtils.post("Account/GetUserInfoList", map).then((data){
+      var infoResult = InfoResult.fromJson(data);
+      switch(infoResult.statusCode){
+        case 200:
+           /*初始化数据*/
+           Store.value<UserModel>(context)
+              .initUserInfo(
+              infoResult.data.data[0].id,
+              infoResult.data.data[0].userID,
+              infoResult.data.data[0].nickName??"匿名用户",
+              infoResult.data.data[0].avator??"time.jpg",
+              infoResult.data.data[0].remainMoney.toString(),
+              infoResult.data.data[0].totalMoney.toString(),
+              infoResult.data.data[0].frozenMoney.toString(),
+              infoResult.data.data[0].con.toString(),
+              infoResult.data.data[0].ifAuth,
+              infoResult.data.data[0].trueName??"未实名",
+              infoResult.data.data[0].iDCard??"未实名",
+              infoResult.data.data[0].sex??"未选择",
+              infoResult.data.data[0].phone);
+
+
+             print(Store.value<UserModel>(context).con);
+
+
+          break;
+      }
+    });
+  }
+
+
+
 }
 
 class BottomBarPage extends StatefulWidget{

@@ -15,7 +15,7 @@ class Store {
     );
   }
 
-//  通过Provider.value<T>(context)获取状态数据
+// 通过Provider.value<T>(context)获取状态数据
 static T value<T>(context){
     return Provider.of(context);
 }
@@ -24,6 +24,5 @@ static T value<T>(context){
 static Consumer connect<T>({builder,child}){
     return Consumer<T>(builder: builder,child: child);
 }
-
 
 }

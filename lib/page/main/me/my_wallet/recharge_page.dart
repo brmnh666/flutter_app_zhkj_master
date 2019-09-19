@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,9 @@ class _RechargePage extends State<RechargePage>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    fluwx.register(appId:"wxd22da3eb42259071");
+    /*注册*/
+    fluwx.register(appId:"wxe6645eb8d10e5f9d");
+
     SpHelper.getUserName().then((username)=> _getuserinfolist(username));
     _controller.addListener((){
      setState(() {
@@ -489,6 +490,13 @@ class _RechargePage extends State<RechargePage>{
                                                           @Field("Style") String Style,
                                                           @Field("JsonStr") JSONArray JsonStr);
                                                           *
+* {StatusCode: 200, Info: 请求(或处理)成功, Data: {Item1: true, Item2: {appid: wxe6645eb8d10e5f9d,
+* noncestr: hSdlMktU3Poxyt99,
+* out_trade_no: 2443-1568864036496294496294,
+* package: Sign=WXPay, partnerid: 1527134641,
+*  prepayid: wx19113356385369d1f8ba95e51492094500,
+* sign: EAD7605B1E847F6B56116B470BBFE080,
+* timestamp: 1568864036}}}
 * */
 
   /*微信获取充值信息*/
@@ -497,7 +505,7 @@ _GetWXOrderStr(String UserID,
      {String BisId="",
      String OrderId="",
      String Type="1",
-     String Style="worker",
+     String Style="fluttermaster",
      String json=""}
     ) async{
   var data = Map();
@@ -532,9 +540,10 @@ _GetWXOrderStr(String UserID,
   });
 }
 
+
 _wechatpay(appId,partnerId,prepayId,packageValue,
-     nonceStr,timeStamp,sign,{ signType, extData}){
-     fluwx.pay(
+     nonceStr,timeStamp,sign,{signType, extData}){
+      fluwx.pay(
       appId: appId,
       partnerId: partnerId,
       prepayId: prepayId,
@@ -543,10 +552,11 @@ _wechatpay(appId,partnerId,prepayId,packageValue,
       timeStamp: timeStamp,
       sign: sign).then((wx){
       print(wx["platform"]);
-      print(wx["result:true "]);
-
+      print(wx["result"]);
   });
-
 }
+
+/*微信人工回调*/
+/*"Pay/WXNotifyManual"*/
 
 }

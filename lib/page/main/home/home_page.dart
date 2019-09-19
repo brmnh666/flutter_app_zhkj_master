@@ -9,9 +9,12 @@ import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
@@ -22,13 +25,12 @@ class MyHomeItemPage extends StatefulWidget {
   }
 }
 class _MyHomeItemPage extends State<MyHomeItemPage>{
-  String _headurl="time.jpg"; //头像
-  String _Con="西瓜币:¥ 0";//西瓜币
-  String _NickName="";//昵称
-  bool _isIfAuth=false;
+  //String _headurl="time.jpg"; //头像
+  //String _Con="西瓜币:¥ 0";//西瓜币
+  //String _NickName="";//昵称
+  //bool _isIfAuth=false;
   List<Data2> list_work=List();//工单列表
   int page=1;
-
 
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
@@ -37,17 +39,18 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
     super.initState();
       SpHelper.getUserName().then(
        (UserName){
-         _getInfo(UserName);
+         //_getInfo(UserName);
          _getWorkInfo(UserName,"0","1","10");
        }
       );
-      GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
+
+    /*  GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
       if(event.state=="true"){//如果为true修改成功
         setState(() {
           SpHelper.getUserName().then((UserName)=> _getInfo(UserName));
         });
       }
-    });
+    });*/
   }
 
 
@@ -178,12 +181,24 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                margin: EdgeInsets.only(left: 20),
                                child:ClipRRect(
                                    borderRadius: BorderRadius.circular(40),
-                                   child:Image.network(
+                                   child:
+                                   Store.connect<UserModel>(
+                                       builder: (context, UserModel snapshot, child) {
+                                         return Image.network(
+                                           Config.HEAD_URL+"${snapshot.avator}",
+                                           width: 80,
+                                           height: 80,
+                                           fit: BoxFit.fill, //图片填充方式
+                                         );
+                                       }
+                                   ),
+
+                                 /*  Image.network(
                                      Config.HEAD_URL+_headurl,
                                      width: 80,
                                      height: 80,
                                      fit: BoxFit.fill, //图片填充方式
-                                   )
+                                   )*/
                                ),
                              ),
 
@@ -196,57 +211,99 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                 /*店铺名*/
                                 Container(
                                    margin: EdgeInsets.only(left: 10,bottom: 5),
-                                   child: Text(_NickName,
-                                       softWrap: true,
-                                       textAlign: TextAlign.left,
-                                       overflow: TextOverflow.ellipsis,
-                                       maxLines: 1,
-                                       style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)
+                                   child:
+                                   Store.connect<UserModel>(
+                                       builder: (context, UserModel snapshot, child) {
+                                         return Text(
+                                          '${snapshot.nickname}',
+                                            softWrap: true,
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)
+                                         );
+                                       }
                                    ),
                                   ),
-
-                               Container(
-                                 /*已实名认证*/
-                                 margin: EdgeInsets.only(left: 10),
-                                 child: Offstage(
-                                   offstage: !_isIfAuth,
-                                   child:
-                                   /*是否实名认证*/
-                                   Row(
-                                       children: <Widget>[
-                                         Image.asset(ImageHelper.wrapAssets("home_yishiming.png"),width: 15,height: 15,),
-                                         Text("已实名认证",style: TextStyle(fontSize: 13,color: Colors.blueAccent),),
-                                       ]
-                                   ),
-                                 ),
-                               ),
-
+                               /*已实名认证*/
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Offstage(
+                                    offstage:  Store.value<UserModel>(context).ifauth!="1",
+                                    child:
+                                    /*是否实名认证*/
+                                    Row(
+                                        children: <Widget>[
+                                          Image.asset(ImageHelper.wrapAssets("home_yishiming.png"),width: 15,height: 15,),
+                                          Text("已实名认证",style: TextStyle(fontSize: 13,color: Colors.blueAccent),),
+                                        ]
+                                    ),
+                                  ),
+                                ),
+                                /*审核中*/
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Offstage(
+                                    offstage:Store.value<UserModel>(context).ifauth!="0",
+                                    child:
+                                    Row(
+                                        children: <Widget>[
+                                          Image.asset(ImageHelper.wrapAssets("home_yishiming.png"),width: 15,height: 15,),
+                                          Text("审核中",style: TextStyle(fontSize: 13,color: Colors.blueAccent),),
+                                        ]
+                                    ),
+                                  ),
+                                ),
+                                /*审核拒绝*/
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Offstage(
+                                    offstage:Store.value<UserModel>(context).ifauth!="-1",
+                                    child:
+                                    Row(
+                                        children: <Widget>[
+                                          Image.asset(ImageHelper.wrapAssets("home_yishiming.png"),width: 15,height: 15,),
+                                          Text("审核拒绝",style: TextStyle(fontSize: 13,color: Colors.blueAccent),),
+                                        ]
+                                    ),
+                                  ),
+                                ),
                                 /*未实名认证*/
-                               Container(
-                                 margin: EdgeInsets.only(left: 10),
-                                 child: GestureDetector(
-                                   child: Offstage(
-                                     offstage: _isIfAuth,
-                                     child: Row(
-                                         children: <Widget>[
-                                          Image.asset(ImageHelper.wrapAssets("all_weishiming.png"),width: 15,height: 15,),
-                                          Text("未实名认证",style: TextStyle(fontSize: 13,color: Colors.red),),
-                                         ]
-                                     ),
-                                   ),
-                                   onTap:(){
-                                     //Fluttertoast.showToast(msg: "点击了实名认证");
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: GestureDetector(
+                                    child: Offstage(
+                                      offstage: Store.value<UserModel>(context).ifauth!=null,
+                                      child: Row(
+                                          children: <Widget>[
+                                            Image.asset(ImageHelper.wrapAssets("all_weishiming.png"),width: 15,height: 15,),
+                                            Text("未实名认证",style: TextStyle(fontSize: 13,color: Colors.red),),
+                                          ]
+                                      ),
+                                    ),
+                                    onTap:(){
+                                      //Fluttertoast.showToast(msg: "点击了实名认证");
                                       NavigatorUtil.goCertificationPage(context);
-                                   } ,
-                                 ),
+                                    } ,
+                                  ),
+                                ),
 
 
-                               ),
 
 //                               /*西瓜币余额*/
                                 Container(
                                   margin: EdgeInsets.only(left: 10,top: 5),
-                                    child:Text(_Con,style: TextStyle(fontSize: 16,color: Color.fromARGB(255,125,125,125))),
+                                    child:
+                                    Store.connect<UserModel>(
+                                        builder: (context, UserModel snapshot, child) {
+                                          return Text(
+                                              "西瓜币:¥ ${snapshot.con}",
+                                              style: TextStyle(fontSize: 16,color: Color.fromARGB(255,125,125,125))
+                                          );
+                                        }
+                                    ),
+
+
                                 )
 
                               ],
@@ -404,7 +461,11 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
   void _onRefresh() async{
     list_work.clear();
     page=1;
-    SpHelper.getUserName().then((UserName) =>_getWorkInfo(UserName,"0","1","10"));
+    SpHelper.getUserName().then((UserName){
+      _getWorkInfo(UserName,"0","1","10");
+       _getInfo(UserName);
+    }
+       );
   }
 
   /*上拉加载*/
@@ -414,7 +475,7 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
   }
 
 
-  /*获取个人信息*/
+  /*更新个人信息*/
   _getInfo(String UserID ,{String limit="1"}) async{
     var map=Map();
     map["UserID"]=UserID;
@@ -423,15 +484,7 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
       var infoResult = InfoResult.fromJson(data);
       switch(infoResult.statusCode){
         case 200:
-          setState(() {
-            _headurl=infoResult.data.data[0].avator??"time.jpg";
-            _NickName=infoResult.data.data[0].nickName??"未设置";
-            _Con="西瓜币:¥ ${infoResult.data.data[0].con}";
-            /*已实名认证*/
-            if(infoResult.data.data[0].ifAuth=="1"){
-              _isIfAuth=true;
-            }
-          });
+          Store.value<UserModel>(context).setIfAuth(infoResult.data.data[0].ifAuth);
           break;
       }
     });
