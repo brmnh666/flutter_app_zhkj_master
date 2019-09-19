@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_zhkj_master/bean/base_response.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
+import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
+
 
 class AddBankCardPage extends StatefulWidget{
   @override
@@ -11,6 +17,25 @@ class AddBankCardPage extends StatefulWidget{
 }
 class _AddBankCardPage extends State<AddBankCardPage>{
   TextEditingController _controller=TextEditingController();
+  bool _isSuccess =false;
+  String _bankname="";
+  @override
+  void initState() {
+    super.initState();
+    /*查询银行卡是否可用*/
+    _controller.addListener((){
+      if(_controller.text.length<6){
+        setState(() {
+          _isSuccess=false;
+        });
+      }
+      if(_controller.text.length==6||_controller.text.length>=16){
+        _GetSupportForCardNo(_controller.text.substring(0,6));
+      }
+
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,85 +129,124 @@ class _AddBankCardPage extends State<AddBankCardPage>{
                      hintText:"请绑定持卡人本人银行卡",
                      hintStyle: TextStyle(color: Colors.grey,fontSize: 19)
                    ),
+
+
+                   inputFormatters: <TextInputFormatter>[
+                     WhitelistingTextInputFormatter.digitsOnly,//只输入数字
+                     LengthLimitingTextInputFormatter(19)//限制长度
+                   ],
                    //光标设置
                    cursorColor: Colors.black,
                    cursorWidth: 1,
                    keyboardType: TextInputType.number,
                  )
                  ),
-                 Padding(
-                     padding: EdgeInsets.only(right: 15),
-                     child: Image.asset(ImageHelper.wrapAssets("ic_close.png"),width: 22,height: 22)),
+                 GestureDetector(
+                   child:Padding(
+                         padding: EdgeInsets.only(right: 15),
+                         child: Image.asset(ImageHelper.wrapAssets("ic_close.png"),width: 22,height: 22)),
+                   onTap: (){
+                     setState(() {
+                       _controller.text="";
+                       _isSuccess=false;
+                       _bankname="";
+                     });
+                   },
+                 )
+
 
                ],
              ),
            ),
 
             /*验证成功后我的银行卡片*/
-            Container(
-              width: double.infinity,
-              height: 150,
-              padding: EdgeInsets.only(top: 2,bottom:2 ),
-               color: Colors.white,
-               child:Card(
-                 color: MyUtil.BackGroundColor("工商银行"),
-                 child: Stack(children: <Widget>[
-                   /*白色圆形背景*/
-                   Container(
-                     margin: EdgeInsets.only(left: 10,top: 10),
-                     width: 50,
-                     height: 50,
-                     decoration: BoxDecoration(
-                         color: Colors.white,
-                         borderRadius: BorderRadius.all(Radius.circular(25))
-                     ),
-                   ),
-                   /*银行logo*/
-                   Container(
-                     width: 40,
-                     height: 40,
-                     margin: EdgeInsets.only(left: 15,top: 15),
-                     decoration: BoxDecoration(
-                         borderRadius: BorderRadius.all(Radius.circular(25))
-                     ),
-                     child: Image.asset(
-                         ImageHelper.wrapAssets("gongshang.png")),
-                   ),
-                   /*银行名*/
-                   Container(
-                     margin: EdgeInsets.only(left: 70,top: 20),
-                     child: Text("工商银行",style: TextStyle(color: Colors.white,fontSize:20,fontWeight: FontWeight.w500),),
-                   ),
-                   /*卡号*/
-                   Container(
-                     margin: EdgeInsets.only(bottom: 15,right: 10),
-                     alignment: Alignment.bottomRight,
-                     child: Text(
-                       "1234 **** **** 1242"
-                       ,style: TextStyle(color: Colors.white,fontSize:15),),
-                   )
+            Offstage(
+              offstage:!_isSuccess,
+              child:  Container(
+                width: double.infinity,
+                height: 150,
+                padding: EdgeInsets.only(top: 2,bottom:2 ),
+                color: Colors.white,
+                child:Card(
+                  color: MyUtil.BackGroundColor(_bankname),
+                  child: Stack(children: <Widget>[
+                    /*白色圆形背景*/
+                    Container(
+                      margin: EdgeInsets.only(left: 10,top: 10),
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(25))
+                      ),
+                    ),
+                    /*银行logo*/
+                    Container(
+                      width: 40,
+                      height: 40,
+                      margin: EdgeInsets.only(left: 15,top: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(25))
+                      ),
+                      child: Image.asset(
+                          ImageHelper.wrapAssets(MyUtil.showBankLogo(_bankname))),
+                    ),
+                    /*银行名*/
+                    Container(
+                      margin: EdgeInsets.only(left: 70,top: 20),
+                      child: Text(_bankname,style: TextStyle(color: Colors.white,fontSize:20,fontWeight: FontWeight.w500),),
+                    ),
+                    /*卡号*/
+                    Container(
+                      margin: EdgeInsets.only(bottom: 15,right: 10),
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        "**** **** **** ****"
+                        ,style: TextStyle(color: Colors.white,fontSize:15),),
+                    )
 
-                 ],
-                 ),
-               ),
+                  ],
+                  ),
+                ),
+              ),
             ),
+
             /*提交卡号*/
             Container(
               width: double.infinity,
               color: Colors.white,
               height: 80,
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(2))
-                ),
-                child: Text("提交卡号",style: TextStyle(color: Colors.white,fontSize: 16)),
-              ),
+              child:
+              _controller.text.length>=12&&_isSuccess?
+                  GestureDetector(//满足条件可以添加
+                    child:   Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 22,144,255),
+                          borderRadius: BorderRadius.all(Radius.circular(2))
+                        ),
+                      child: Text("提交卡号",style: TextStyle(color: Colors.white,fontSize: 18)),
+                      ),
+                    onTap: (){
+                      SpHelper.getUserName().then(
+                        (username)=>_addBankCard(username,"Bank",_bankname,_controller.text)
+                      );
+
+                     },
+                     )
+                    :
+                    Container(//不满足条件不可以添加
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(100, 22,144,255),
+                          borderRadius: BorderRadius.all(Radius.circular(2))
+                      ),
+                      child: Text("提交卡号",style: TextStyle(color: Color.fromARGB(255, 196,224,246),fontSize: 18)),
+                    )
+
             )
-
-
 
           ],
 
@@ -190,4 +254,71 @@ class _AddBankCardPage extends State<AddBankCardPage>{
       ),
     );
   }
+
+  /*根据银行卡号获取银行名 判断后台是否支持该银行的提现 6位数
+*  {"StatusCode":200,"Info":"请求(或处理)成功","Data":{"Item1":true,"Item2":"中国工商银行"}}
+* */
+  _GetSupportForCardNo(String CardNo) async{
+    var data=Map();
+    data["CardNo"]=CardNo;
+    await HttpUtils.post("Account/GetBankNameByCardNo", data).then((result){
+      var baseResponse = BaseResponse.fromJson(result);
+      switch(baseResponse.statusCode){
+        case 200:
+          if(baseResponse.data.item1){
+            if(baseResponse.data.item2==""){
+              setState(() {
+              _isSuccess=false;
+              });
+            }else{
+              setState(() {
+                _isSuccess=true;
+                _bankname=baseResponse.data.item2;
+              });
+            }
+          }
+          break;
+      }
+    }).catchError((error){
+      print(error);
+    });
+  }
+
+/*添加银行卡
+*   @FormUrlEncoded
+    @POST("Account/AddorUpdateAccountPayInfo")
+    Observable<BaseResult<Data<String>>> AddorUpdateAccountPayInfo(@Field("UserID") String UserID,
+                                                                   @Field("PayInfoCode") String PayInfoCode,
+                                                                   @Field("PayInfoName") String PayInfoName,
+                                                                   @Field("PayNo") String PayNo);
+*
+*{"StatusCode":200,"Info":"请求(或处理)成功","Data":{"Item1":true,"Item2":"39"}}
+* */
+_addBankCard(String UserID,String PayInfoCode,String PayInfoName,String PayNo)async{
+var data=Map();
+data["UserID"]=UserID;
+data["PayInfoCode"]=PayInfoCode;
+data["PayInfoName"]=PayInfoName;
+data["PayNo"]=PayNo;
+await HttpUtils.post("Account/AddorUpdateAccountPayInfo", data).then((result){
+ var baseResponse = BaseResponse.fromJson(result);
+ switch(baseResponse.statusCode){
+   case 200:
+     if(baseResponse.data.item1){
+       Fluttertoast.showToast(msg: "添加成功");
+       NavigatorUtil.goBack(context);
+     }
+     break;
+
+ }
+
+});
+
+
+}
+
+
+
+
+
 }

@@ -113,6 +113,9 @@ class MyUtil{
     if (bankname.contains("邮政")) {
       return "youzheng.png";
     }
+    if(bankname.contains("邮储")){
+      return "youzheng.png";
+    }
     if (bankname.contains("浙商")) {
       return "zheshang.png";
     }
@@ -168,6 +171,9 @@ class MyUtil{
     if(bankname.contains("邮政")){
       return Color.fromARGB(255,0,100,0);
     }
+    if(bankname.contains("邮储")){
+      return Color.fromARGB(255,0,100,0);
+    }
     if(bankname.contains("招商")){
       return Color.fromARGB(255,238,121,66);
     }
@@ -180,6 +186,10 @@ class MyUtil{
     if(bankname.contains("中信")){
       return Color.fromARGB(255,238,44,44);
     }
+    else{
+      return Color.fromARGB(255,22,144,255);
+    }
+    
   }
 
 
