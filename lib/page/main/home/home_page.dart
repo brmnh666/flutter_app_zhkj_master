@@ -25,10 +25,6 @@ class MyHomeItemPage extends StatefulWidget {
   }
 }
 class _MyHomeItemPage extends State<MyHomeItemPage>{
-  //String _headurl="time.jpg"; //头像
-  //String _Con="西瓜币:¥ 0";//西瓜币
-  //String _NickName="";//昵称
-  //bool _isIfAuth=false;
   List<Data2> list_work=List();//工单列表
   int page=1;
 
@@ -39,18 +35,10 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
     super.initState();
       SpHelper.getUserName().then(
        (UserName){
-         //_getInfo(UserName);
          _getWorkInfo(UserName,"0","1","10");
        }
       );
 
-    /*  GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
-      if(event.state=="true"){//如果为true修改成功
-        setState(() {
-          SpHelper.getUserName().then((UserName)=> _getInfo(UserName));
-        });
-      }
-    });*/
   }
 
 
@@ -193,12 +181,6 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                        }
                                    ),
 
-                                 /*  Image.network(
-                                     Config.HEAD_URL+_headurl,
-                                     width: 80,
-                                     height: 80,
-                                     fit: BoxFit.fill, //图片填充方式
-                                   )*/
                                ),
                              ),
 
@@ -484,7 +466,12 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
       var infoResult = InfoResult.fromJson(data);
       switch(infoResult.statusCode){
         case 200:
-          Store.value<UserModel>(context).setIfAuth(infoResult.data.data[0].ifAuth);
+          Store.value<UserModel>(context).setIfAuth(
+              infoResult.data.data[0].ifAuth,
+              infoResult.data.data[0].trueName,
+              infoResult.data.data[0].iDCard,
+              infoResult.data.data[0].address
+          );
           break;
       }
     });

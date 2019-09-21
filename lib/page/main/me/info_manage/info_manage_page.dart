@@ -11,9 +11,12 @@ import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 /*个人信息管理页面*/
 class MyInfoManagePage extends StatefulWidget{
@@ -25,28 +28,7 @@ class MyInfoManagePage extends StatefulWidget{
   }
 }
 
-String _headurl="time.jpg"; //头像地址 需要给别的widget用所以放外面
 class _MyInfoManagePage extends State<MyInfoManagePage>{
-     String _shopname="";//店铺名
-     String _truename="";//真实姓名
-     String _IfAuth="";//是否认证
-     String _idcard="";//身份证号
-     String _address="";//店铺地址
-     String _sex="";//性别
-
-     @override
-     void initState() {
-       super.initState();
-       SpHelper.getUserName().then((UserName)=> getInfo(UserName));
-
-       GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
-         if(event.state==EventConfig.HEAD){//如果为true修改成功
-           setState(() {
-           SpHelper.getUserName().then((UserName)=> getInfo(UserName));
-           });
-         }
-       });
-     }
 
      @override
     void dispose() {
@@ -86,7 +68,6 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
         child: Column(
           children: <Widget>[
             /*-------头像-------*/
-
             Container(
                 child:Row(
                   children: <Widget>[
@@ -95,12 +76,17 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
                     Row(children: <Widget>[
                       ClipRRect(
                           borderRadius: BorderRadius.circular(25),
-                          child:Image.network(
-                              Config.HEAD_URL+_headurl,
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.fill, //图片填充方式
-                              )
+                          child:
+                          Store.connect<UserModel>(
+                              builder: (context, UserModel snapshot, child) {
+                                return Image.network(
+                                  Config.HEAD_URL+"${snapshot.avator}",
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.fill, //图片填充方式
+                                );
+                              }
+                          ),
                       ),
 
                       Image.asset(
@@ -205,7 +191,14 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
                child:Row(
                  children: <Widget>[
                    Expanded(child: Text("店铺名称",style: text_style)),
-                   Text(_shopname, style: TextStyle(fontSize: 12)),
+                   Store.connect<UserModel>(
+                       builder: (context, UserModel snapshot, child) {
+                         return Text(
+                             '${snapshot.nickname}',
+                             style: TextStyle(fontSize: 12)
+                         );
+                      }
+                   ),
                      Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20),
                ],
                ),
@@ -229,7 +222,15 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
                 children: <Widget>[
                   Expanded(child: Text("姓名",style: text_style)),
                   Padding(padding: EdgeInsets.only(right: 10),
-                      child: Text(_truename, style: TextStyle(fontSize: 14))
+                      child:
+                      Store.connect<UserModel>(
+                          builder: (context, UserModel snapshot, child) {
+                            return Text(
+                                '${snapshot.truename}',
+                                 style: TextStyle(fontSize: 14)
+                            );
+                          }
+                      ),
                   ),
 
                   /*认证标签*/
@@ -238,9 +239,27 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
                     decoration: BoxDecoration(
                     border: Border.all(color: Color.fromARGB(255, 255,203,199))
                     ),
-                    child:Text(_IfAuth,
-                    style: TextStyle(color: Color.fromARGB(255, 255,83,70),fontSize: 12),
-                    ))
+                    child:
+                    Store.connect<UserModel>(
+                        builder: (context, UserModel snapshot, child) {
+                          String _ifauth="";
+                          if("${snapshot.ifauth}"==null){
+                            _ifauth="未认证";
+                          }else if("${snapshot.ifauth}"=="1"){
+                            _ifauth="已认证";
+                          }else if("${snapshot.ifauth}"=="0"){
+                            _ifauth="认证中";
+                          }else if("${snapshot.ifauth}"=="-1"){
+                            _ifauth="审核不通过";
+                          }
+                          return Text(
+                            _ifauth,
+                            style: TextStyle(color: Color.fromARGB(255, 255,83,70),fontSize: 12),
+                          );
+
+                        }
+                    ),
+                  )
 
 
 
@@ -285,7 +304,17 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
               child:Row(
                 children: <Widget>[
                   Expanded(child: Text("身份证",style: text_style)),
-                  Text(_idcard)
+                  Store.connect<UserModel>(
+                      builder: (context, UserModel snapshot, child) {
+                        String idcard="";
+                        if("${snapshot.idcard}"==null){
+                          idcard="未认证";
+                        }else{
+                          idcard=snapshot.idcard.replaceRange(6,14 , "**********");
+                        }
+                       return Text(idcard);
+                      }
+                  ),
                 ],
               ),
               padding: EdgeInsets.only(left: 10,right: 10),
@@ -332,9 +361,14 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
                   padding: EdgeInsets.only(right: 20),
                   child:Text("店铺地址",style: text_style)),
                   Expanded(
-                      child:Text(_address,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis)
+                      child:
+                      Store.connect<UserModel>(
+                          builder: (context, UserModel snapshot, child) {
+                            return Text(
+                                '${snapshot.address}'
+                            );
+                          }
+                      ),
                   )
 
                 ],
@@ -360,7 +394,14 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
               child:Row(
                 children: <Widget>[
                   Expanded(child: Text("性别",style: text_style)),
-                  Text(_sex,style: TextStyle(fontSize: 14)),
+                  Store.connect<UserModel>(
+                      builder: (context, UserModel snapshot, child) {
+                        return Text(
+                            '${snapshot.sex}',
+                             style: TextStyle(fontSize: 14)
+                        );
+                      }
+                  ),
                   Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20),
                 ],
               ),
@@ -388,7 +429,9 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
                                 ),
                                 alignment: Alignment.center,
                               ),onTap: (){
-                            _uploadSex("18892621501","男");
+                                SpHelper.getUserName().then((username)=>
+                                    _uploadSex(username,"男")
+                                );
                             Navigator.pop(context);
                           }
                           ),
@@ -408,7 +451,9 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
                                 alignment: Alignment.center,
                               ),
                               onTap: (){
-                                _uploadSex("18892621501","女");
+                                SpHelper.getUserName().then((username)=>
+                                    _uploadSex(username,"女")
+                                );
                                 Navigator.pop(context);
                               }
                           ),
@@ -477,33 +522,6 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
   );
 
      /*获取个人信息*/
-   getInfo (String UserID ,{String limit="1"}) async{
-     var map=Map();
-     map["UserID"]=UserID;
-     map["limit"]=limit;
-     await HttpUtils.post("Account/GetUserInfoList", map).then((data){
-     var infoResult = InfoResult.fromJson(data);
-       switch(infoResult.statusCode){
-         case 200:
-          // Fluttertoast.showToast(msg: infoResult.info);
-           setState(() {
-             _shopname=infoResult.data.data[0].nickName??"暂无";
-             _headurl=infoResult.data.data[0].avator??"time.jpg";
-             _truename=infoResult.data.data[0].trueName??"暂无";
-             _sex=infoResult.data.data[0].sex??"暂无";
-
-             if(infoResult.data.data[0].ifAuth=="1"){
-              _IfAuth="已认证";
-             }else{
-               _IfAuth="未认证";
-             }
-             _idcard=infoResult.data.data[0].iDCard.replaceRange(6, 14, "********")??"暂无";
-             _address=infoResult.data.data[0].address??"暂无";
-           });
-           break;
-       }
-     });
-   }
 
    /*上传头像*/
    _upLoadImage(File image) async{
@@ -511,7 +529,7 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
     var name = path.substring(path.lastIndexOf("/") + 1, path.length);
     var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
     FormData formData =FormData.from({
-       "UserID":"18892621501", //后期要改
+       "UserID":Store.value<UserModel>(context).userid,
        "img":UploadFileInfo(File(path), name,contentType: ContentType.parse("image/$suffix"))
     });
 
@@ -520,11 +538,7 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
        switch(baseResponse.statusCode){
          case 200:
             if(baseResponse.data.item1){
-            setState(() {
-              _headurl = baseResponse.data.item2;
-            });
-            //修改成功发送eventbus
-            GlobalEventBus().eventBus.fire(StateChangeEvent("true"));
+              Store.value<UserModel>(context).setHead(baseResponse.data.item2);
             }
            break;
        }
@@ -542,9 +556,7 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
         case 200:
           if(baseResponse.data.item1){
             Fluttertoast.showToast(msg: "性别更改成功");
-            setState(() {
-              _sex=Sex;
-            });
+            Store.value<UserModel>(context).setSex(Sex);
           }
           break;
       }
@@ -566,10 +578,15 @@ class LookPic extends StatelessWidget{
       alignment: Alignment.center,
       child:ClipRRect(
           borderRadius: BorderRadius.circular(5),
-          child:Image.network(
-            Config.HEAD_URL+_headurl,
-            fit: BoxFit.contain, //图片填充方式
-          )
+          child:
+          Store.connect<UserModel>(
+              builder: (context, UserModel snapshot, child) {
+                return Image.network(
+                  Config.HEAD_URL+"${snapshot.avator}",
+                  fit: BoxFit.contain, //图片填充方式
+                );
+              }
+          ),
       ),
     );
   }

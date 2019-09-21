@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_zhkj_master/bean/info_result.dart';
 import 'package:flutter_app_zhkj_master/config/config.dart';
-import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
-import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
-import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 
 class MyMeItemPage extends StatefulWidget{
 
@@ -17,29 +15,10 @@ class MyMeItemPage extends StatefulWidget{
 }
 
 class _MyMeItemPage extends State<MyMeItemPage>{
-  String _headurl="time.jpg"; //头像
-  String _NickName="";//昵称
-  String _phone="";//手机号
-
-  @override
-  void initState() {
-    super.initState();
-    SpHelper.getUserName().then((UserName)=> _getInfo(UserName));
-
-    GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
-      if(event.state=="true"){//如果为true修改成功
-        setState(() {
-          SpHelper.getUserName().then((UserName)=> _getInfo(UserName));
-        });
-      }
-    });
-
-  }
 
   @override
   void dispose() {
     super.dispose();
-    GlobalEventBus().eventBus.destroy();
   }
 
   @override
@@ -67,12 +46,17 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                             margin: EdgeInsets.only(left: 20),
                             child:ClipRRect(
                                 borderRadius: BorderRadius.circular(35),
-                                child:Image.network(
-                                  Config.HEAD_URL+_headurl,
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.fill, //图片填充方式
-                                )
+                                child:
+                                Store.connect<UserModel>(
+                                    builder: (context, UserModel snapshot, child) {
+                                      return Image.network(
+                                        Config.HEAD_URL+"${snapshot.avator}",
+                                        width: 70,
+                                        height: 70,
+                                        fit: BoxFit.fill, //图片填充方式
+                                      );
+                                    }
+                                ),
                             ),
                           ),
 
@@ -81,13 +65,36 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               /*店铺名*/
-                              Padding(padding: EdgeInsets.only(left: 20,bottom: 8),child:  Text(_NickName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white))),
+                                      Store.connect<UserModel>(
+                                        builder: (context, UserModel snapshot, child){
+                                          return
+                                            Padding(padding: EdgeInsets.only(left: 20,bottom: 8),
+                                            child: Text(
+                                                "${snapshot.nickname}",
+                                                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white)
+                                              ),
+                                            );
+                                        }
+                                      ),
                               /*手机号*/
                               Padding(padding: EdgeInsets.only(left: 20),
                                 child:Row(
                                   children: <Widget>[
                                     Image.asset(ImageHelper.wrapAssets("phone.png"),width: 13,height: 13),
-                                    Text(_phone,style: TextStyle(fontSize: 13,color:Colors.white))
+                                    Store.connect<UserModel>(
+                                        builder: (context, UserModel snapshot, child) {
+                                          String _phone="";
+                                          if(snapshot.phone==null){
+                                            _phone="***********";
+                                          }else{
+                                            _phone=snapshot.phone.replaceRange(3, 7, "****");
+                                          }
+                                          return Text(
+                                              _phone,
+                                              style: TextStyle(fontSize: 13,color:Colors.white)
+                                          );
+                                        }
+                                    ),
                                   ],
                                 ),)
                             ],
@@ -254,7 +261,9 @@ class _MyMeItemPage extends State<MyMeItemPage>{
 
 
                 /*子账号管理*/
-                Container(
+
+                GestureDetector(
+                child: Container(
                     margin: EdgeInsets.only(left: 10,right: 10,top: 1),
                     width: double.infinity,
                     height: 60,
@@ -274,6 +283,10 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                     ],
                     )
                 ),
+                onTap: (){
+                  NavigatorUtil.goByPassAccountPage(context);
+                }),
+
 
                 /*附属子账号管理*/
                 Container(
@@ -386,40 +399,13 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                     ],
                     )
                 ),
-
-
-
-
-
               ],
 
             ),
 
           )
-
-
     );
   }
 
-
-  /*获取个人信息*/
-  _getInfo(String UserID ,{String limit="1"}) async{
-    var map=Map();
-    map["UserID"]=UserID;
-    map["limit"]=limit;
-    await HttpUtils.post("Account/GetUserInfoList", map).then((data){
-      var infoResult = InfoResult.fromJson(data);
-      switch(infoResult.statusCode){
-        case 200:
-          setState(() {
-            _headurl=infoResult.data.data[0].avator??"time.jpg";
-            _NickName=infoResult.data.data[0].nickName??"暂无";
-            _phone=infoResult.data.data[0].phone.replaceRange(3, 7, "****")??"暂无";
-
-          });
-          break;
-      }
-    });
-  }
 
 }

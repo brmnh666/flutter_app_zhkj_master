@@ -100,14 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
               infoResult.data.data[0].con.toString(),
               infoResult.data.data[0].ifAuth,
               infoResult.data.data[0].trueName??"未实名",
-              infoResult.data.data[0].iDCard??"未实名",
+              infoResult.data.data[0].iDCard,
               infoResult.data.data[0].sex??"未选择",
-              infoResult.data.data[0].phone);
-
-
-             print(Store.value<UserModel>(context).con);
-
-
+              infoResult.data.data[0].phone,
+              infoResult.data.data[0].address
+           );
           break;
       }
     });

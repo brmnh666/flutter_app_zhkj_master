@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/bean/base_response.dart';
+import 'package:flutter_app_zhkj_master/config/eventconfig.dart';
+import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
@@ -306,6 +308,7 @@ await HttpUtils.post("Account/AddorUpdateAccountPayInfo", data).then((result){
    case 200:
      if(baseResponse.data.item1){
        Fluttertoast.showToast(msg: "添加成功");
+       GlobalEventBus().eventBus.fire(StateChangeEvent(EventConfig.BANDCARD));
        NavigatorUtil.goBack(context);
      }
      break;

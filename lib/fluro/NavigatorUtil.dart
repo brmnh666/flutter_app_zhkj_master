@@ -130,4 +130,13 @@ class NavigatorUtil{
         transition: TransitionType.inFromRight);
   }
 
+  ///跳转到子账号
+  static void goByPassAccountPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.bypassaccount,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
+
 }

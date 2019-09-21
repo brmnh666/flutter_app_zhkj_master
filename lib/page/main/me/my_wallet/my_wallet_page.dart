@@ -1,11 +1,15 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_zhkj_master/bean/get_bank_card_response.dart';
 import 'package:flutter_app_zhkj_master/bean/get_bill_response.dart';
 import 'package:flutter_app_zhkj_master/bean/info_result.dart';
+import 'package:flutter_app_zhkj_master/config/eventconfig.dart';
+import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 
 class MyWalletPage extends StatefulWidget{
@@ -28,6 +32,7 @@ class _MyWalletPage extends State<MyWalletPage>{
   List<Data2> list_sz=List();//收支
   List<Data2> list_withdraw=List();//提现
   List<Data2> list_recharge=List();//充值
+  String _bankcardnum="已绑定0张银行卡";
 
   @override
   void initState() {
@@ -37,7 +42,28 @@ class _MyWalletPage extends State<MyWalletPage>{
     _getAccountBill(UserName, "2,5");
     _getAccountBill(UserName, "3");
     _getuserinfolist(UserName);
+    _getMyBankCard(UserName);
     });
+
+    /*需要更新数据操作*/
+    GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
+      if(event.state==EventConfig.MONENY){//更新余额
+        if (mounted)
+          setState(() {
+            SpHelper.getUserName().then((UserName)=>_getuserinfolist(UserName)
+            );
+          });
+      }
+      if(event.state==EventConfig.BANDCARD){//银行卡
+        if (mounted){
+          setState(() {
+            SpHelper.getUserName().then((UserName)=>_getMyBankCard(UserName)
+            );
+          });
+        }
+      }
+    });
+
   }
 
   @override
@@ -256,7 +282,7 @@ class _MyWalletPage extends State<MyWalletPage>{
                             Expanded(child:Container(
                               alignment: Alignment.centerRight,
 
-                              child: Text("已绑定0张银行卡",style: TextStyle(fontSize: 15,color: Color.fromARGB(255, 154,159,180)),),
+                              child: Text(_bankcardnum,style: TextStyle(fontSize: 15,color: Color.fromARGB(255, 154,159,180)),),
                             )
                             ),
                             Padding(padding: EdgeInsets.only(right: 10),
@@ -626,6 +652,26 @@ class _MyWalletPage extends State<MyWalletPage>{
          break;
      }
    });
+  }
+  
+  /*获取银行卡*/
+  _getMyBankCard(String UserID) async{
+    var data=Map();
+    data["UserID"]=UserID;
+    await HttpUtils.post("Account/GetAccountPayInfoList", data).then((data){
+      var getBankCardResponse = GetBankCardResponse.fromJson(data);
+      switch(getBankCardResponse.statusCode){
+        case 200:
+          if(getBankCardResponse.data.length!=0){
+          setState(() {
+            _bankcardnum="已绑定 ${getBankCardResponse.data.length} 张银行卡";
+          });
+
+          }
+          
+          break;
+      }
+    });
   }
 
 

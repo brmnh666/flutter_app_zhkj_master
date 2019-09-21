@@ -2,7 +2,7 @@ class UserInfo extends Object{
   String UserName;
   String UserID;
   String NickName;
-  String Avator;
+  String Avator="time.jpg";
   String RemainMoney;
   String TotalMoney;
   String FrozenMoney;
@@ -12,6 +12,7 @@ class UserInfo extends Object{
   String IDCard;
   String Sex;
   String Phone;
+  String Address;
 
   UserInfo(
   {this.UserName,
@@ -26,7 +27,8 @@ class UserInfo extends Object{
   this.TrueName,
   this.IDCard,
   this.Sex,
-  this.Phone
+  this.Phone,
+  this.Address
   });
 
   UserInfo.fromJson(Map<String, dynamic> json) {
@@ -43,6 +45,7 @@ class UserInfo extends Object{
     IDCard = json['IDCard'];
     Sex = json['Sex'];
     Phone = json['Phone'];
+    Address=json['Address'];
 
   }
   Map<String, dynamic> toJson() {
@@ -60,6 +63,7 @@ class UserInfo extends Object{
     data['IDCard'] = this.IDCard;
     data['Sex'] = this.Sex;
     data['Phone'] = this.Phone;
+    data['Address']=this.Address;
     return data;
   }
 }

@@ -5,6 +5,8 @@ import 'package:flutter_alipay/flutter_alipay.dart';
 import 'package:flutter_app_zhkj_master/bean/base_response.dart';
 import 'package:flutter_app_zhkj_master/bean/get_wechat_pay_response.dart';
 import 'package:flutter_app_zhkj_master/bean/info_result.dart';
+import 'package:flutter_app_zhkj_master/config/eventconfig.dart';
+import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
@@ -24,13 +26,29 @@ class _RechargePage extends State<RechargePage>{
   int _index_paytype=0;
   String _totle="0.00";
   String _recharge_money="100";
+  String _OutTradeNo="";//人工回调微信充值
+
   TextEditingController _controller=TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     /*注册*/
-    fluwx.register(appId:"wxe6645eb8d10e5f9d");
+    fluwx.register(appId:"wx827def61a5191c5d");
+    /*支付回调*/
+    fluwx.responseFromPayment.listen((response){
+
+      switch(response.errCode){
+        case 0://充值成功
+          _WXNotifyManual(_OutTradeNo);
+          break;
+        case -2://退回
+          break;
+      }
+      print("type的结果为 ${response.type} errStr的结果为${response.errStr} errCode的结果为${response.errCode}");
+      //do something
+    });
+
 
     SpHelper.getUserName().then((username)=> _getuserinfolist(username));
     _controller.addListener((){
@@ -446,20 +464,21 @@ class _RechargePage extends State<RechargePage>{
         switch(baseResponse.statusCode){
           case 200:
             if(baseResponse.data.item1){
-            //  print(baseResponse.data.item2);
               _alipay(baseResponse.data.item2);
             }
             break;
         }
       });
-  }
+   }
 
     /*alipay*/
    _alipay(String payinfo)async{
     await FlutterAlipay.pay(payinfo).then((alipay){
-      switch(alipay.result){
+      switch(alipay.resultStatus){
         case "9000":
           Fluttertoast.showToast(msg: "订单支付成功");
+          GlobalEventBus().eventBus.fire(StateChangeEvent(EventConfig.MONENY));
+          NavigatorUtil.goBack(context);
           break;
         case "8000":
           Fluttertoast.showToast(msg: "正在处理中");
@@ -521,6 +540,7 @@ _GetWXOrderStr(String UserID,
      switch(getWechatPayResponse.statusCode){
        case 200:
          if(getWechatPayResponse.data.item1){
+           _OutTradeNo= getWechatPayResponse.data.item2.outTradeNo;
            _wechatpay(
                getWechatPayResponse.data.item2.appid,
                getWechatPayResponse.data.item2.partnerid,
@@ -556,7 +576,35 @@ _wechatpay(appId,partnerId,prepayId,packageValue,
   });
 }
 
-/*微信人工回调*/
-/*"Pay/WXNotifyManual"*/
+/*
+*  /**
+     * 微信人工回调OutTradeNo
+     *
+     * @param OutTradeNo
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("Pay/WXNotifyManual")
+    Observable<BaseResult<Data<String>>> WXNotifyManual(@Field("OutTradeNo") String OutTradeNo);
+* */
+  _WXNotifyManual(String out_trade_no)async{
+    var data=Map();
+    data["out_trade_no"]=out_trade_no;
+    await HttpUtils.post("Pay/WXNotifyManual", data).then((response){
+      var baseResponse = BaseResponse.fromJson(response);
+      switch(baseResponse.statusCode){
+        case 200:
+          if(baseResponse.data.item1){
+            GlobalEventBus().eventBus.fire(StateChangeEvent(EventConfig.MONENY));
+            NavigatorUtil.goBack(context);
+          }
+          break;
+       }
+      }
+    );
+
+
+  }
+
 
 }

@@ -24,3 +24,7 @@ samples, guidance on mobile development, and a full API reference.
 # recharge_page 充值页面
 # withdraw_page 提现页面
 # selectbank_page 选择提现银行卡页面
+# bypass_account_page 子账号页面
+# feedback_page 意见反馈
+# my_message_page 消息
+# notifucation_page 通知

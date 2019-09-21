@@ -3,6 +3,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/page/certification_page.dart';
 import 'package:flutter_app_zhkj_master/page/login.dart';
+import 'package:flutter_app_zhkj_master/page/main/me/bypass_account_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/info_manage_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/mod_password_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/update_service_area.dart';
@@ -130,5 +131,11 @@ var mycardlistHandler=Handler(
  var addbankcardHandler=Handler(
      handlerFunc:(BuildContext context, Map<String, List<String>> params){
        return AddBankCardPage();
+     }
+ );
+ ///跳转到子账号
+ var bypassaccountHandler=Handler(
+     handlerFunc:(BuildContext context, Map<String, List<String>> params){
+       return ByPassAccountPage();
      }
  );

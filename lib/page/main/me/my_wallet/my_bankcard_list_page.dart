@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/bean/get_bank_card_response.dart';
+import 'package:flutter_app_zhkj_master/config/eventconfig.dart';
+import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_app_zhkj_master/util/my_util.dart';
 
 /*我的银行卡页面*/
 class BankCardList extends StatefulWidget{
+
   @override
   State<StatefulWidget> createState() {
     return _BankCardList();
@@ -15,11 +18,23 @@ class BankCardList extends StatefulWidget{
 }
 class _BankCardList extends State<BankCardList>{
   List<Data> _Listbank = List();
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
     SpHelper.getUserName().then((username)=>_getMyBankCard(username));
+
+    /*需要更新数据操作*/
+    GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
+      if(event.state==EventConfig.BANDCARD){//银行卡
+        if (mounted){
+          setState(() {
+            SpHelper.getUserName().then((UserName)=>_getMyBankCard(UserName)
+            );
+          });
+        }
+      }
+    });
+
   }
   @override
   Widget build(BuildContext context) {
@@ -64,7 +79,9 @@ class _BankCardList extends State<BankCardList>{
                      margin: EdgeInsets.only(left: 10,right: 10),
                      height: 160,
                      child: Card(
-                       color: MyUtil.BackGroundColor(_Listbank[index].payInfoName),
+                       color: MyUtil.BackGroundColor(
+                           _Listbank[index].payInfoName
+                       ),
                        child: Stack(children: <Widget>[
                          /*白色圆形背景*/
                         Container(
@@ -85,21 +102,29 @@ class _BankCardList extends State<BankCardList>{
                                borderRadius: BorderRadius.all(Radius.circular(25))
                            ),
                            child: Image.asset(
-                             ImageHelper.wrapAssets(MyUtil.showBankLogo(_Listbank[index].payInfoName))),
+                             ImageHelper.wrapAssets(MyUtil.showBankLogo(
+                                 _Listbank[index].payInfoName
+                             ))
+                           ),
                          ),
                          /*银行名*/
                          Container(
                            margin: EdgeInsets.only(left: 70,top: 20),
-                           child: Text(_Listbank[index].payInfoName,style: TextStyle(color: Colors.white,fontSize:20,fontWeight: FontWeight.w500),),
+                           child:
+                           Text(
+                             _Listbank[index].payInfoName,style: TextStyle(color: Colors.white,fontSize:20,fontWeight: FontWeight.w500)
+                           ),
                          ),
 
                          /*卡号*/
                          Container(
                            margin: EdgeInsets.only(bottom: 15,right: 10),
                            alignment: Alignment.bottomRight,
-                           child: Text(
+                           child:
+                           Text(
                              "${_Listbank[index].payNo.substring(0,4)} **** **** ${_Listbank[index].payNo.substring(_Listbank[index].payNo.length-4,_Listbank[index].payNo.length)}"
-                             ,style: TextStyle(color: Colors.white,fontSize:15),),
+                             ,style: TextStyle(color: Colors.white,fontSize:15)
+                           )
                          )
 
                        ],
@@ -159,8 +184,6 @@ class _BankCardList extends State<BankCardList>{
               margin: EdgeInsets.only(left: 13,top: 10,bottom: 20),
               child: Text("为了保障您的资金安全，您在西瓜鱼平台所绑定的银行卡必须与户名匹配，否则，您的资金将无法转入到您的账户中。",style: TextStyle(fontSize: 14,color: Colors.grey)),
             ),
-
-
           ],
         ),
       )
@@ -169,6 +192,7 @@ class _BankCardList extends State<BankCardList>{
 
   /*height*/
    _getHeight(){
+
     if(_Listbank.length==0){
       return 0.0;
     }else{
@@ -186,8 +210,7 @@ class _BankCardList extends State<BankCardList>{
       var getBankCardResponse = GetBankCardResponse.fromJson(data);
       switch(getBankCardResponse.statusCode){
         case 200:
-          print(getBankCardResponse.data[0].isSelect);
-          setState(() {
+          setState((){
             _Listbank=getBankCardResponse.data;
           });
           break;

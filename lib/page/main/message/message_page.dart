@@ -45,7 +45,6 @@ class _MyHomeItemPage extends State<MyMessageItemPage>{
             },
               child:Text("点老子"),
               color: Colors.yellowAccent,)
-
           ],
         )
 

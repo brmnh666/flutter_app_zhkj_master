@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app_zhkj_master/config/eventconfig.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/bean/updataname.dart';
-import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -71,7 +71,6 @@ class _MyupdateShopname extends State<MyupdateShopname>{
           cursorRadius: Radius.circular(1),
           //键盘类型设置
           keyboardType: TextInputType.text,
-
           //是否是密码
           obscureText: false,
 
@@ -96,9 +95,7 @@ class _MyupdateShopname extends State<MyupdateShopname>{
          if(controller.text==null||controller.text==""){
            Fluttertoast.showToast(msg: "请输入正确的店铺名");
          }else{
-
            SpHelper.getUserName().then((UserName)=> _updateshopname(controller.text,UserName));
-
          }
 
        },
@@ -119,7 +116,7 @@ class _MyupdateShopname extends State<MyupdateShopname>{
         case 200:
          if(updataname.data.item1){
            Fluttertoast.showToast(msg: "修改成功");
-           GlobalEventBus().eventBus.fire(StateChangeEvent(EventConfig.HEAD));
+           Store.value<UserModel>(context).setShopName(NickName);
            NavigatorUtil.goBack(context);
          }
          break;

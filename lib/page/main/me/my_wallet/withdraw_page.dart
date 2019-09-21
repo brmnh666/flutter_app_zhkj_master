@@ -280,6 +280,7 @@ class WithdrawPage extends StatefulWidget{
         case 200:
           if(baseResponse.data.item1){
             Fluttertoast.showToast(msg:  baseResponse.data.item2);
+            GlobalEventBus().eventBus.fire(StateChangeEvent(EventConfig.MONENY));
             NavigatorUtil.goBack(context);
           }else{
             Fluttertoast.showToast(msg:  baseResponse.data.item2);
