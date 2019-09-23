@@ -92,6 +92,7 @@ class _MyWalletPage extends State<MyWalletPage>{
               )
           ),
         ) ,
+        elevation: 0.0,
       ),
       body:
 

@@ -23,6 +23,7 @@ dependencies:
   flutter_webview_plugin: 0.3.8
   flutter_alipay: 0.1.2
   fluwx: 1.0.6
+  qr_flutter: 3.0.1
 
 dev_dependencies:
   flutter_test:
