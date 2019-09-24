@@ -28,3 +28,5 @@ samples, guidance on mobile development, and a full API reference.
 # feedback_page 意见反馈
 # my_message_page 消息
 # notifucation_page 通知
+
+# setting_page 设置页面

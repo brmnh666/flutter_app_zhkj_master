@@ -38,7 +38,7 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return  Scaffold(
       backgroundColor: Color.fromARGB(255,245,242,245),
       appBar: AppBar(
         title: Text("个人信息管理",

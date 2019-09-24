@@ -170,4 +170,13 @@ class NavigatorUtil{
         replace: false,
         transition: TransitionType.inFromRight);
   }
+
+  ///跳转设置页面
+  static Future goSettingPage(BuildContext context){
+    return Application.router.navigateTo(
+        context,
+        Routes.setting,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
 }

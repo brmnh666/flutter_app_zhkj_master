@@ -14,6 +14,7 @@ import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/my_wallet_page.da
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/recharge_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/selectbank_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/withdraw_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/me/setting_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/message/message/my_message_list_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/message/message/my_transaction_list_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/message/notification/my_notifucation_list_page.dart';
@@ -161,4 +162,10 @@ var notifucationHandler=Handler(
     String type=params["type"]?.first;
     return MyNotifucationListPage(type: type);
   }
+);
+///跳转设置页面
+var settingHandler=Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params){
+      return SettingPage();
+    }
 );

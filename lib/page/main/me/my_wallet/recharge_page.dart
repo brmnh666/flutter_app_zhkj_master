@@ -370,7 +370,6 @@ class _RechargePage extends State<RechargePage>{
     return _index_paytype==position ? //选中情况
     GestureDetector(
       child:
-
         Stack(children: <Widget>[
           /*显示下角标*/
           Container(
