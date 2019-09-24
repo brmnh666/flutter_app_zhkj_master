@@ -24,6 +24,7 @@ dependencies:
   flutter_alipay: 0.1.2
   fluwx: 1.0.6
   qr_flutter: 3.0.1
+  bubble_tab_indicator: 0.1.4
 
 dev_dependencies:
   flutter_test:

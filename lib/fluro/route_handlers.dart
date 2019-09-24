@@ -14,6 +14,9 @@ import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/my_wallet_page.da
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/recharge_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/selectbank_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/my_wallet/withdraw_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/message/message/my_message_list_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/message/message/my_transaction_list_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/message/notification/my_notifucation_list_page.dart';
 import 'package:flutter_app_zhkj_master/page/splash_page.dart';
 import 'package:flutter_app_zhkj_master/page/web_page.dart';
 
@@ -114,9 +117,9 @@ var selectbankHandler=Handler(
 ///跳去web页面
 var webpageHandler=Handler(
     handlerFunc:(BuildContext context, Map<String, List<String>> params){
-     // String url=params["url"]?.first;
-     // String title=params["title"]?.first;
-      return WebPage();
+      String url=params["url"]?.first;
+      String title=params["title"]?.first;
+      return WebPage(url: url,title:title);
     }
 );
 
@@ -139,3 +142,23 @@ var mycardlistHandler=Handler(
        return ByPassAccountPage();
      }
  );
+
+ ///跳转到消息列表页面
+var messageHandler=Handler(
+    handlerFunc:(BuildContext context, Map<String, List<String>> params){
+      return MyMessageListPage();
+    }
+);
+///跳转到交易信息页面
+var transactionHandler=Handler(
+    handlerFunc:(BuildContext context, Map<String, List<String>> params){
+      return MyTransactionListPage();
+    }
+);
+///跳转通知列表
+var notifucationHandler=Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params){
+    String type=params["type"]?.first;
+    return MyNotifucationListPage(type: type);
+  }
+);

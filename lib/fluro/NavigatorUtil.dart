@@ -1,6 +1,7 @@
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_zhkj_master/util/fluro_convert_util.dart';
 
 import 'application.dart';
 import 'routes.dart';
@@ -104,10 +105,14 @@ class NavigatorUtil{
   }
 
   ///跳转到条款页面
-  static void goWebPage(BuildContext context){
+  static void goWebPage(BuildContext context,String url,String title){
+
+      String _url = FluroConvertUtils.fluroCnParamsEncode(url);
+      String _title = FluroConvertUtils.fluroCnParamsEncode(title);
+
      Application.router.navigateTo(
         context,
-        Routes.webpage,
+        Routes.webpage+"?url=$_url&title=$_title",
         replace: false,
         transition: TransitionType.inFromRight);
   }
@@ -139,4 +144,30 @@ class NavigatorUtil{
         transition: TransitionType.inFromRight);
   }
 
+  ///跳转到消息列表
+  static void goMessageListPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.message,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
+
+  ///跳转到交易信息列表
+  static void goTransactionListPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.transaction,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
+
+  ///跳转到通知列表
+  static Future goNotifucationPage(BuildContext context,String type){
+    return Application.router.navigateTo(
+        context,
+        Routes.notifucation+"?type=${type}",
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
 }

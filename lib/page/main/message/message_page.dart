@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_zhkj_master/provider/index.dart';
-import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
+import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'message/my_message_page.dart';
+import 'notification/notifucation_page.dart';
 
 
 class MyMessageItemPage extends StatefulWidget{
@@ -12,44 +13,61 @@ class MyMessageItemPage extends StatefulWidget{
 }
 
 class _MyHomeItemPage extends State<MyMessageItemPage>{
+  List<Widget> title;
+  List<Widget> pages;
+  @override
+  void initState() {
+    super.initState();
+    title=List()..add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(ImageHelper.wrapAssets("ic_xiaoxi.png"),width: 20,height: 20),
+             Padding(padding:EdgeInsets.only(left: 3),
+               child:Text("消息")),
+          ],
+        )
+    )..add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(ImageHelper.wrapAssets("ic_tongzhi.png"),width: 20,height: 20),
+            Padding(padding:EdgeInsets.only(left: 3),
+                child:Text("通知")),
+          ],
+        ));
+    pages= List()..add(MessagePage())..add(NotifucationPage());
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      body: Center(
-        child:
-
-        Column(
-          children: <Widget>[
-            Store.connect<UserModel>(
-                builder: (context, UserModel snapshot, child) {
-                  return Text(
-                      '${snapshot.username}'
-                  );
-                }
-            ),
-
-            /*Store.connect<UserModel>(
-                builder: (context, UserModel snapshot, child) {
-                  return RaisedButton(
-                    child: Text('change name'),
-                    onPressed: () {
-                      snapshot.setUserName("拜仁慕尼黑");
-                    },
-                  );
-                }
-            ),*/
-
-            RaisedButton(onPressed: (){
-              Store.value<UserModel>(context).setUserName("鸡鸡夫斯基");
-            },
-              child:Text("点老子"),
-              color: Colors.yellowAccent,)
-          ],
-        )
+    return DefaultTabController(
+          length: 2,
+          child:Scaffold(
+              appBar: AppBar(
+                flexibleSpace:Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+                      )
+                  ),
+                ) ,
+                bottom: TabBar(tabs: title,
+                  labelColor: Colors.white,
+                  labelStyle: TextStyle(fontSize: 20),
+                  labelPadding: EdgeInsets.only(bottom: 10),
+                  isScrollable: false,
+                  unselectedLabelColor: Colors.white,
+                  indicatorColor: Colors.white,
+                  indicatorWeight:2.5,
+                  controller: DefaultTabController.of(context),
+                ),
+              ),
+              body: TabBarView(
+                children: pages,
+              )
+          ));
 
 
-      ),
-    );
   }
 }

@@ -192,5 +192,18 @@ class MyUtil{
     
   }
 
+/*2019-09-10T15:39:55"
+* 转换为
+* 2019年09月10日15时39分55秒
+* */
+  static String getTimeforCN(String Time){
+  String result=  Time.replaceRange(4, 5, "年")
+                      .replaceRange(7, 8, "月")
+                      .replaceRange(10, 11, "日")
+                      .replaceRange(13, 14, "时")
+                      .replaceRange(16, 17, "分")+"秒";
+     return result;
+  }
+
 
 }

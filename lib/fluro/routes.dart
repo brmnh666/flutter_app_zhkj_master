@@ -22,6 +22,9 @@ class Routes{
   static String mycardlist="/mycardlist";
   static String addbankcard="/addbankcard";
   static String bypassaccount="/bypassaccount";
+  static String message="/message";
+  static String transaction="/transaction";
+  static String notifucation="/notifucation";
 
   static void configureRoutes(Router router){
     router.notFoundHandler=new Handler(
@@ -48,6 +51,9 @@ class Routes{
     router.define(mycardlist, handler: mycardlistHandler);
     router.define(addbankcard, handler: addbankcardHandler);
     router.define(bypassaccount, handler: bypassaccountHandler);
+    router.define(message, handler: messageHandler);
+    router.define(transaction, handler: transactionHandler);
+    router.define(notifucation, handler: notifucationHandler);
   }
 
 

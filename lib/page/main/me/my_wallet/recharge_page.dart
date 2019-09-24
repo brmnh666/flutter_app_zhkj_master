@@ -206,7 +206,9 @@ class _RechargePage extends State<RechargePage>{
                               GestureDetector(
                                 child: Text("《充值服务协议》",style:TextStyle(color:Colors.blue,fontSize: 14,fontWeight: FontWeight.w600)),
                                 onTap: (){
-                                  NavigatorUtil.goWebPage(context);
+                                  NavigatorUtil.goWebPage(context,
+                                      "https://admin.xigyu.com/Agreement",
+                                      "充值协议");
                                 },
                               )
 

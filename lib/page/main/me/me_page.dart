@@ -345,7 +345,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                     Row(children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("erweima.png"),width: 20,height: 20)),
+                          child:Image.asset(ImageHelper.wrapAssets("kefu.png"),width: 20,height: 20)),
                       Expanded(child: Text("客服电话",style: TextStyle(fontSize: 15))),
                       Text("400-6262-365"),
                       Padding(
@@ -391,7 +391,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                     Row(children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("setting.png"),width: 20,height: 20)),
+                          child:Image.asset(ImageHelper.wrapAssets("about.png"),width: 20,height: 20)),
                       Expanded(child: Text("关于我们",style: TextStyle(fontSize: 15))),
                       Padding(
                           padding: EdgeInsets.only(right: 15),
