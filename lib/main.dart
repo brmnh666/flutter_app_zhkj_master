@@ -155,7 +155,6 @@ class _BottomBarPage extends State<BottomBarPage>{
    Widget buildBottomTabScaffold(){
      return SizedBox(
        child: Scaffold(
-         backgroundColor: Color.fromARGB(255,240,240,240),
          body: IndexedStack(
            index: currentIndex,
            children: _pages,

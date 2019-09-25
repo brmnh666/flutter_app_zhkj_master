@@ -5,7 +5,6 @@ import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
 import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
-import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -50,7 +49,6 @@ class _FeedbackPage extends State<FeedbackPage>{
               );
             }
         ),
-
         elevation: 0,
       ),
       body: Column(
@@ -62,12 +60,12 @@ class _FeedbackPage extends State<FeedbackPage>{
             child: Row(
               children: <Widget>[
                 Expanded(child:
-               item_select_problem(1,"账号问题(已选)","ic_acc.png")
+                 item_select_problem(1,"账号问题","ic_acc.png")
               ),
                Expanded(child:
-               item_select_problem(2,"支付问题(已选)","ic_zhif.png")),
+               item_select_problem(2,"支付问题","ic_zhif.png")),
                Expanded(child:
-               item_select_problem(3,"其他问题(已选)","ic_qita.png")
+               item_select_problem(3,"其他问题","ic_qita.png")
                ),
 
 
@@ -101,7 +99,7 @@ class _FeedbackPage extends State<FeedbackPage>{
               decoration: InputDecoration(
                 disabledBorder: InputBorder.none,
                 enabledBorder:  InputBorder.none,
-                focusedBorder:   InputBorder.none,
+                focusedBorder:  InputBorder.none,
               ),
             )
           ),
@@ -126,10 +124,6 @@ class _FeedbackPage extends State<FeedbackPage>{
                     );
                 }
             ),
-
-
-
-
             onTap: (){
               if(_controller.text==""){
                 Fluttertoast.showToast(msg: "请输入反馈内容");
@@ -139,10 +133,6 @@ class _FeedbackPage extends State<FeedbackPage>{
 
             },
           )
-
-
-
-
         ],
 
       ),
@@ -152,34 +142,42 @@ class _FeedbackPage extends State<FeedbackPage>{
 
   Widget item_select_problem(int index,String problem,String photo){
     return _position==index?
-        Container(
-          alignment: Alignment.center,
+    Store.connect<ConfigModel>(
+        builder: (context, ConfigModel snapshot, child) {
+          return Container(
+            alignment: Alignment.center,
             height: 80,
             margin: EdgeInsets.only(left: 18,right: 18),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Color.fromARGB(190,33,150,243),
-              border: Border.all(width: 1.5,color: Colors.orange)
-          ),
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: ThemeUtil.SetTransparencyColor(snapshot.theme),
+                border: Border.all(width: 1.5,color: Colors.orange)
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(ImageHelper.wrapAssets(photo),width: 40,height: 40),
-                Text(problem,style: TextStyle(fontSize:10,color: Colors.white,fontWeight: FontWeight.w500),)
+                Text("${problem}(已选)",
+                  style: TextStyle(fontSize:10,color: Colors.white,fontWeight: FontWeight.w500),)
               ],
             ),
-        ):
-
+          );
+        }
+    ):
        GestureDetector(
-         child:Container(
-           alignment: Alignment.center,
-           height: 80,
-           margin: EdgeInsets.only(left: 18,right: 18),
-           decoration: BoxDecoration(
-             borderRadius: BorderRadius.all(Radius.circular(5)),
-             color: Color.fromARGB(190,33,150,243),
-           ),
-           child: Text(problem,style: TextStyle(fontSize:10,color: Colors.white),),
+         child: Store.connect<ConfigModel>(
+             builder: (context, ConfigModel snapshot, child) {
+               return Container(
+                 alignment: Alignment.center,
+                 height: 80,
+                 margin: EdgeInsets.only(left: 18,right: 18),
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.all(Radius.circular(5)),
+                   color: ThemeUtil.SetTransparencyColor(snapshot.theme),
+                 ),
+                 child: Text(problem,style: TextStyle(fontSize:10,color: Colors.white),),
+               );
+             }
          ),
          onTap: (){
          setState(() {
