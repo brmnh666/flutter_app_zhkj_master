@@ -179,4 +179,22 @@ class NavigatorUtil{
         replace: false,
         transition: TransitionType.inFromRight);
   }
+  ///跳转到关于我们
+  static void goAboutMePage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.aboutme,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
+
+  ///跳转到意见反馈
+  static void goFeedBackPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.feedback,
+        replace: false,
+        transition: TransitionType.inFromRight);
+  }
+
 }

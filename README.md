@@ -30,3 +30,4 @@ samples, guidance on mobile development, and a full API reference.
 # notifucation_page 通知
 
 # setting_page 设置页面
+# about_me_page 关于我们

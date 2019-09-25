@@ -3,6 +3,8 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/page/certification_page.dart';
 import 'package:flutter_app_zhkj_master/page/login.dart';
+import 'package:flutter_app_zhkj_master/page/main/me/about_us/about_me_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/me/about_us/feedback_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/bypass_account_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/info_manage_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/info_manage/mod_password_page.dart';
@@ -167,5 +169,17 @@ var notifucationHandler=Handler(
 var settingHandler=Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params){
       return SettingPage();
+    }
+);
+///跳转到关于我们
+var aboutmeHandler=Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params){
+      return AboutMePage();
+    }
+);
+///跳转到意见反馈
+var feedbackHandler=Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params){
+      return FeedbackPage();
     }
 );

@@ -385,26 +385,33 @@ class _MyMeItemPage extends State<MyMeItemPage>{
 
 
                 /*关于我们*/
-                Container(
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 1,bottom: 40),
-                    width: double.infinity,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(5))
-                    ),
-                    child:
-                    Row(children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("about.png"),width: 20,height: 20)),
-                      Expanded(child: Text("关于我们",style: TextStyle(fontSize: 15))),
-                      Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
-                    ],
-                    )
-                ),
+
+                GestureDetector(
+                  child:Container(
+                      margin: EdgeInsets.only(left: 10,right: 10,top: 1,bottom: 40),
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                      ),
+                      child:
+                      Row(children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(left: 10,right: 10),
+                            child:Image.asset(ImageHelper.wrapAssets("about.png"),width: 20,height: 20)),
+                        Expanded(child: Text("关于我们",style: TextStyle(fontSize: 15))),
+                        Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
+                      ],
+                      )
+                  ),
+                  onTap: (){
+                    NavigatorUtil.goAboutMePage(context);
+                  },
+                )
+
               ],
 
             ),
