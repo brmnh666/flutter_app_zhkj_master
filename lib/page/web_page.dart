@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/util/fluro_convert_util.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
@@ -43,13 +46,24 @@ class _WebPage extends State<WebPage>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+          flexibleSpace: Store.connect<ConfigModel>(
+              builder: (context, ConfigModel snapshot, child) {
+             return  Container(
+             decoration: BoxDecoration(
+             gradient: LinearGradient(
+               colors: ThemeUtil.setActionBar(snapshot.theme)
+                  )
+                 ),
+                 );
+                }
+               ),
+       //Container(
+       //  decoration: BoxDecoration(
+       //      gradient: LinearGradient(
+       //          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+       //      )
+       //  ),
+       //) ,
       ),
     );
   }

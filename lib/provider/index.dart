@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' show BuildContext;
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:provider/provider.dart' show ChangeNotifierProvider, MultiProvider, Consumer, Provider;
 
 import 'model/UserModel.dart';
@@ -9,7 +10,8 @@ class Store {
   static init({context,child}){
     return MultiProvider(
         providers:[//需要管理多个状态只需要在providers添加对应的状态
-          ChangeNotifierProvider(builder: (_)=>UserModel())
+          ChangeNotifierProvider(builder: (_)=>UserModel()),
+          ChangeNotifierProvider(builder: (_)=>ConfigModel())
         ],
       child: child,
     );

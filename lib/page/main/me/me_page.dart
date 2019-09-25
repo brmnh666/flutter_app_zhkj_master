@@ -3,8 +3,12 @@ import 'package:flutter_app_zhkj_master/config/config.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
-
+import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 class MyMeItemPage extends StatefulWidget{
 
   @override
@@ -32,76 +36,84 @@ class _MyMeItemPage extends State<MyMeItemPage>{
               children: <Widget>[
                 Stack(
                   children: <Widget>[
-                    Container(
-                      height: 170,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-                          )
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          /*头像显示*/
-                          Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child:ClipRRect(
-                                borderRadius: BorderRadius.circular(35),
-                                child:
-                                Store.connect<UserModel>(
-                                    builder: (context, UserModel snapshot, child) {
-                                      return Image.network(
-                                        Config.HEAD_URL+"${snapshot.avator}",
-                                        width: 70,
-                                        height: 70,
-                                        fit: BoxFit.fill, //图片填充方式
-                                      );
-                                    }
-                                ),
-                            ),
-                          ),
 
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              /*店铺名*/
-                                      Store.connect<UserModel>(
-                                        builder: (context, UserModel snapshot, child){
-                                          return
-                                            Padding(padding: EdgeInsets.only(left: 20,bottom: 8),
-                                            child: Text(
-                                                "${snapshot.nickname}",
-                                                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white)
-                                              ),
-                                            );
-                                        }
-                                      ),
-                              /*手机号*/
-                              Padding(padding: EdgeInsets.only(left: 20),
-                                child:Row(
-                                  children: <Widget>[
-                                    Image.asset(ImageHelper.wrapAssets("phone.png"),width: 13,height: 13),
+
+                    Store.connect<ConfigModel>(
+                        builder: (context, ConfigModel snapshot, child) {
+                          return Container(
+                            width: double.infinity,
+                            height: 170,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: ThemeUtil.setActionBar(snapshot.theme)
+                                )
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                /*头像显示*/
+                                Container(
+                                  margin: EdgeInsets.only(left: 20),
+                                  child:ClipRRect(
+                                    borderRadius: BorderRadius.circular(35),
+                                    child:
                                     Store.connect<UserModel>(
                                         builder: (context, UserModel snapshot, child) {
-                                          String _phone="";
-                                          if(snapshot.phone==null){
-                                            _phone="***********";
-                                          }else{
-                                            _phone=snapshot.phone.replaceRange(3, 7, "****");
-                                          }
-                                          return Text(
-                                              _phone,
-                                              style: TextStyle(fontSize: 13,color:Colors.white)
+                                          return Image.network(
+                                            Config.HEAD_URL+"${snapshot.avator}",
+                                            width: 70,
+                                            height: 70,
+                                            fit: BoxFit.fill, //图片填充方式
                                           );
                                         }
                                     ),
+                                  ),
+                                ),
+
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    /*店铺名*/
+                                    Store.connect<UserModel>(
+                                        builder: (context, UserModel snapshot, child){
+                                          return
+                                            Padding(padding: EdgeInsets.only(left: 20,bottom: 8),
+                                              child: Text(
+                                                  "${snapshot.nickname}",
+                                                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white)
+                                              ),
+                                            );
+                                        }
+                                    ),
+                                    /*手机号*/
+                                    Padding(padding: EdgeInsets.only(left: 20),
+                                      child:Row(
+                                        children: <Widget>[
+                                          Image.asset(ImageHelper.wrapAssets("phone.png"),width: 13,height: 13),
+                                          Store.connect<UserModel>(
+                                              builder: (context, UserModel snapshot, child) {
+                                                String _phone="";
+                                                if(snapshot.phone==null){
+                                                  _phone="***********";
+                                                }else{
+                                                  _phone=snapshot.phone.replaceRange(3, 7, "****");
+                                                }
+                                                return Text(
+                                                    _phone,
+                                                    style: TextStyle(fontSize: 13,color:Colors.white)
+                                                );
+                                              }
+                                          ),
+                                        ],
+                                      ),)
                                   ],
-                                ),)
-                            ],
-                          )
-                        ],
-                      ),
+                                )
+                              ],
+                            ),
+                          );
+                        }
                     ),
+
 
                     /*四个工单状态*/
                     Container(
@@ -117,7 +129,14 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                           Expanded(child:Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset(ImageHelper.wrapAssets("icon_me_all_orders.png"),width: 30,height: 30),
+                              Store.connect<ConfigModel>(
+                                  builder: (context, ConfigModel snapshot, child) {
+                                    return Image.asset(
+                                          ImageHelper.wrapAssets("icon_me_all_orders${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                          width: 30,height: 30);
+                                  }
+                              ),
+
                               Padding(padding: EdgeInsets.only(top: 10),
                                 child: Text("已接待预约",style: TextStyle(fontSize: 12,color: Color.fromARGB(255,128,128,128))),
                               )
@@ -141,7 +160,16 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Image.asset(ImageHelper.wrapAssets("icon_me_return_sheet.png"),width: 30,height: 30),
+
+                                Store.connect<ConfigModel>(
+                                    builder: (context, ConfigModel snapshot, child) {
+                                      return Image.asset(
+                                          ImageHelper.wrapAssets("icon_me_return_sheet${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                          width: 30,height: 30);
+                                    }
+                                ),
+
+
                                 Padding(padding: EdgeInsets.only(top: 10),
                                   child: Text("待返件",style: TextStyle(fontSize: 12,color: Color.fromARGB(255,128,128,128))),
                                 )
@@ -164,7 +192,15 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                           Expanded(child:  Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset(ImageHelper.wrapAssets("icon_me_confirmed.png"),width: 30,height: 30),
+                              Store.connect<ConfigModel>(
+                                  builder: (context, ConfigModel snapshot, child) {
+                                    return Image.asset(
+                                        ImageHelper.wrapAssets("icon_me_confirmed${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                        width: 30,height: 30);
+                                  }
+                              ),
+
+                              //Image.asset(ImageHelper.wrapAssets("icon_me_confirmed.png"),width: 30,height: 30),
                               Padding(padding: EdgeInsets.only(top: 10),
                                 child: Text("质保单",style: TextStyle(fontSize: 12,color: Color.fromARGB(255,128,128,128))),
                               )
@@ -186,7 +222,14 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                           Expanded(child:  Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset(ImageHelper.wrapAssets("icon_me_finish.png"),width: 30,height: 30),
+                              Store.connect<ConfigModel>(
+                                  builder: (context, ConfigModel snapshot, child) {
+                                    return Image.asset(
+                                        ImageHelper.wrapAssets("icon_me_finish${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                        width: 30,height: 30);
+                                  }
+                              ),
+                              //Image.asset(ImageHelper.wrapAssets("icon_me_finish.png"),width: 30,height: 30),
                               Padding(padding: EdgeInsets.only(top: 10),
                                 child: Text("已完成",style: TextStyle(fontSize: 12,color: Color.fromARGB(255,128,128,128))),
                               )
@@ -217,7 +260,16 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                     Row(children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("personal.png"),width: 20,height: 20)),
+                          child:
+                          Store.connect<ConfigModel>(
+                              builder: (context, ConfigModel snapshot, child) {
+                                return Image.asset(
+                                    ImageHelper.wrapAssets("personal${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                    width: 20,height: 20);
+                              }
+                          ),
+                          //Image.asset(ImageHelper.wrapAssets("personal.png"),width: 20,height: 20)
+                      ),
                       Expanded(child: Text("个人资料",style: TextStyle(fontSize: 15))),
                       Padding(
                           padding: EdgeInsets.only(right: 15),
@@ -246,11 +298,21 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                       Row(children: <Widget>[
                         Padding(
                             padding: EdgeInsets.only(left: 10,right: 10),
-                            child:Image.asset(ImageHelper.wrapAssets("wallet.png"),width: 20,height: 20)),
+                            child:
+                            Store.connect<ConfigModel>(
+                                builder: (context, ConfigModel snapshot, child) {
+                                  return Image.asset(
+                                      ImageHelper.wrapAssets("wallet${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      width: 20,height: 20);
+                                }
+                            ),
+                           // Image.asset(ImageHelper.wrapAssets("wallet.png"),width: 20,height: 20)
+                           ),
                         Expanded(child: Text("我的钱包",style: TextStyle(fontSize: 15))),
                         Padding(
                             padding: EdgeInsets.only(right: 15),
-                            child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
+                            child:
+                           Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
                       ],
                       )
                   ),
@@ -275,7 +337,15 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                     Row(children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("management.png"),width: 20,height: 20)),
+                          child: Store.connect<ConfigModel>(
+                              builder: (context, ConfigModel snapshot, child) {
+                                return Image.asset(
+                                    ImageHelper.wrapAssets("management${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                    width: 20,height: 20);
+                              }
+                          ),
+                          //Image.asset(ImageHelper.wrapAssets("management.png"),width: 20,height: 20)
+                      ),
                       Expanded(child: Text("子账号管理",style: TextStyle(fontSize: 15))),
                       Padding(
                           padding: EdgeInsets.only(right: 15),
@@ -288,7 +358,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                 }),
 
 
-                /*附属子账号管理*/
+                /*附属账号管理*/
                 Container(
                     margin: EdgeInsets.only(left: 10,right: 10,top: 1),
                     width: double.infinity,
@@ -301,8 +371,17 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                     Row(children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("management.png"),width: 20,height: 20)),
-                      Expanded(child: Text("附属子账号管理",style: TextStyle(fontSize: 15))),
+                          child:
+                          Store.connect<ConfigModel>(
+                              builder: (context, ConfigModel snapshot, child) {
+                                return Image.asset(
+                                    ImageHelper.wrapAssets("management${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                    width: 20,height: 20);
+                              }
+                          ),
+                         // Image.asset(ImageHelper.wrapAssets("management.png"),width: 20,height: 20)
+                      ),
+                      Expanded(child: Text("附属账号管理",style: TextStyle(fontSize: 15))),
                       Padding(
                           padding: EdgeInsets.only(right: 15),
                           child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
@@ -311,49 +390,81 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                 ),
 
                 /*分享给朋友成为师傅*/
-                Container(
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 10),
-                    width: double.infinity,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(5))
-                    ),
-                    child:
-                    Row(children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("erweima.png"),width: 20,height: 20)),
-                      Expanded(child: Text("分享给朋友成为师傅",style: TextStyle(fontSize: 15))),
-                      Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
-                    ],
-                    )
+                GestureDetector(
+                  child:Container(
+                      margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                      ),
+                      child:
+                      Row(children:<Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(left: 10,right: 10),
+                            child:
+                            Store.connect<ConfigModel>(
+                                builder: (context, ConfigModel snapshot, child) {
+                                  return Image.asset(
+                                      ImageHelper.wrapAssets("erweima${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      width: 20,height: 20);
+                                }
+                            ),
+                           // Image.asset(ImageHelper.wrapAssets("erweima.png"),width: 20,height: 20)
+                        ),
+                        Expanded(child: Text("分享给朋友成为师傅",style: TextStyle(fontSize: 15))),
+                        Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
+                      ],
+                      )
+                  ),
+                  onTap: (){
+                    SpHelper.getUserName().then((username)=>
+                        Share.share("http://admin.xigyu.com/sign?phone=${username}&type=7")
+                    );
+                  },
                 ),
 
+
                 /*客服电话*/
-                Container(
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 1),
-                    width: double.infinity,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(5))
-                    ),
-                    child:
-                    Row(children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(left: 10,right: 10),
-                          child:Image.asset(ImageHelper.wrapAssets("kefu.png"),width: 20,height: 20)),
-                      Expanded(child: Text("客服电话",style: TextStyle(fontSize: 15))),
-                      Text("400-6262-365"),
-                      Padding(
-                          padding: EdgeInsets.only(right: 15,left: 10),
-                          child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
-                    ],
-                    )
+                GestureDetector(
+                  child:Container(
+                      margin: EdgeInsets.only(left: 10,right: 10,top: 1),
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                      ),
+                      child:
+                      Row(children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(left: 10,right: 10),
+                            child:
+                            Store.connect<ConfigModel>(
+                                builder: (context, ConfigModel snapshot, child) {
+                                  return Image.asset(
+                                      ImageHelper.wrapAssets("kefu${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      width: 20,height: 20);
+                                }
+                            ),
+                           // Image.asset(ImageHelper.wrapAssets("kefu.png"),width: 20,height: 20)
+                        ),
+                        Expanded(child: Text("客服电话",style: TextStyle(fontSize: 15))),
+                        Text("400-6262-365",style: TextStyle(fontSize: 12)),
+                        Padding(
+                            padding: EdgeInsets.only(right: 15,left: 10),
+                            child: Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20))
+                      ],
+                      )
+                  ),
+                  onTap: (){
+                    _launchPhone();
+                  },
                 ),
+
 
 
                 /*设置*/
@@ -370,7 +481,17 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                       Row(children: <Widget>[
                         Padding(
                             padding: EdgeInsets.only(left: 10,right: 10),
-                            child:Image.asset(ImageHelper.wrapAssets("setting.png"),width: 20,height: 20)),
+                            child:
+                            Store.connect<ConfigModel>(
+                                builder: (context, ConfigModel snapshot, child) {
+                                  return Image.asset(
+                                      ImageHelper.wrapAssets("setting${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      width: 20,height: 20);
+                                }
+                            ),
+                          //  Image.asset(ImageHelper.wrapAssets("setting.png"),width: 20,height: 20)
+
+                        ),
                         Expanded(child: Text("设置",style: TextStyle(fontSize: 15))),
                         Padding(
                             padding: EdgeInsets.only(right: 15),
@@ -399,7 +520,16 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                       Row(children: <Widget>[
                         Padding(
                             padding: EdgeInsets.only(left: 10,right: 10),
-                            child:Image.asset(ImageHelper.wrapAssets("about.png"),width: 20,height: 20)),
+                            child:
+                            Store.connect<ConfigModel>(
+                                builder: (context, ConfigModel snapshot, child) {
+                                  return Image.asset(
+                                      ImageHelper.wrapAssets("about${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      width: 20,height: 20);
+                                }
+                            ),
+                         //   Image.asset(ImageHelper.wrapAssets("about.png"),width: 20,height: 20)
+                        ),
                         Expanded(child: Text("关于我们",style: TextStyle(fontSize: 15))),
                         Padding(
                             padding: EdgeInsets.only(right: 15),
@@ -420,5 +550,13 @@ class _MyMeItemPage extends State<MyMeItemPage>{
     );
   }
 
-
+  /*拨打电话*/
+  _launchPhone() async {
+    const url = 'tel:4006262365';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 }

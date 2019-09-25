@@ -6,8 +6,6 @@ import 'package:flutter_app_zhkj_master/provider/object/UserInfo.dart';
 class UserModel extends UserInfo with ChangeNotifier{
   UserInfo _userInfo =UserInfo();
 
-
-
   String get username =>_userInfo.UserName;
   String get userid =>_userInfo.UserID;
   String get nickname =>_userInfo.NickName;

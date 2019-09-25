@@ -6,7 +6,10 @@ import 'package:flutter_app_zhkj_master/bean/get_province_response.dart' as prov
 import 'package:flutter_app_zhkj_master/bean/service_response.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/widgets/popup_window.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -19,12 +22,10 @@ class MyUpdateServicePage extends StatefulWidget{
 }
 class _MyUpdateServicePage extends State<MyUpdateServicePage>{
   List<Data> list =List();//用于存放返回的地址
-
   List<province.Data> list_province=List(); //用于存放省份
   List<area.Item2> list_city=List();//用于存放城市
   List<area.Item2> list_area=List();//用于存放区域
   List<area.Item2> list_district=List();//用于存放街道
-
 
   String _province="省";//存放所选的省
   String _city="市";//存放所选的市
@@ -66,13 +67,27 @@ class _MyUpdateServicePage extends State<MyUpdateServicePage>{
           Navigator.pop(context);
         }
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace:
+
+        Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return  Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
+       //Container(
+       //  decoration: BoxDecoration(
+       //      gradient: LinearGradient(
+       //          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+       //      )
+       //  ),
+       //) ,
+        elevation: 0.0,
       ),
       body:
 
@@ -83,15 +98,28 @@ class _MyUpdateServicePage extends State<MyUpdateServicePage>{
               /*实现蓝色渐变背景*/
               Stack(
                 children: <Widget>[
-                  Container(
-                      width: double.infinity,
-                      height: 120,
-                      decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                      colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-            ),
+                  Store.connect<ConfigModel>(
+                      builder: (context, ConfigModel snapshot, child) {
+                        return  Container(
+                          width: double.infinity,
+                          height: 120,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: ThemeUtil.setActionBar(snapshot.theme)
+                              )
+                          ),
+                        );
+                      }
                   ),
+                /// Container(
+                ///     width: double.infinity,
+                ///     height: 120,
+                ///     decoration: BoxDecoration(
+                ///     gradient: LinearGradient(
+                ///     colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+                /// )
+                ///  ),
+                /// ),
 
                   Container(
                     margin: EdgeInsets.only(left: 10,right: 10,top: 30),
@@ -451,21 +479,29 @@ class _MyUpdateServicePage extends State<MyUpdateServicePage>{
               /*申请审核*/
 
               GestureDetector(
-                child: Container(
-                  width:double.infinity,
-                  height: 48,
-                  margin: EdgeInsets.only(left: 15,right: 15),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(8))
+                child:
 
-                  ),
-                  alignment: Alignment.center,
-                  child: Text("提交申请",style: TextStyle(fontSize: 18,color: Colors.white)),
+                Store.connect<ConfigModel>(
+                    builder: (context, ConfigModel snapshot, child) {
+                      return Container(
+                        width:double.infinity,
+                        height: 48,
+                        margin: EdgeInsets.only(left: 15,right: 15),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors:ThemeUtil.setActionBar(snapshot.theme)
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(8))
 
+                        ),
+                        alignment: Alignment.center,
+                        child: Text("提交申请",style: TextStyle(fontSize: 18,color: Colors.white)),
+                      );
+                    }
                 ),
+
+
+
                 onTap: (){
                   //获取list中的省份市区街道 111-222-333-444用逗号隔开
                   if(list.length==0){

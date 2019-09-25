@@ -8,8 +8,10 @@ import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -49,54 +51,71 @@ class _ByPassAccountPage extends State<ByPassAccountPage>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace:
+
+        Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return  Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
+        //Container(
+        //  decoration: BoxDecoration(
+        //      gradient: LinearGradient(
+        //          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+        //      )
+        //  ),
+        //) ,
         elevation: 0,
       ),
 
       body: Stack(
         children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: 130,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-                ),
-            ),
-            child: Column(
-              children: <Widget>[
-                GestureDetector(
-                    child:Padding(padding: EdgeInsets.only(top: 10),
-                     child:Image.asset(ImageHelper.wrapAssets("codeshare.png"),width: 37,height: 37),
-                    ),
-                   onTap: (){
-                      /*弹出QR*/
-                    SpHelper.getUserName().then((username){
-                      showDialog<Null>(
-                          context: context, //BuildContext对象
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return QRDialog( //调用对话框
-                              username: username,
-                            );
+          Store.connect<ConfigModel>(
+              builder: (context, ConfigModel snapshot, child) {
+                return  Container(
+                  width: double.infinity,
+                  height: 130,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: ThemeUtil.setActionBar(snapshot.theme)
+                      )
+                  ),
+                  child:Column(
+                    children: <Widget>[
+                      GestureDetector(
+                        child:Padding(padding: EdgeInsets.only(top: 10),
+                          child:Image.asset(ImageHelper.wrapAssets("codeshare.png"),width: 37,height: 37),
+                        ),
+                        onTap: (){
+                          /*弹出QR*/
+                          SpHelper.getUserName().then((username){
+                            showDialog<Null>(
+                                context: context, //BuildContext对象
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return QRDialog( //调用对话框
+                                    username: username,
+                                  );
+                                });
                           });
-                    });
 
-                },
-                ),
+                        },
+                      ),
 
-                Padding(padding: EdgeInsets.only(top: 8),
-                  child:Text("点击二维码添加子账号",style: TextStyle(fontSize: 16,color: Colors.white))
-                ),
+                      Padding(padding: EdgeInsets.only(top: 8),
+                          child:Text("点击二维码添加子账号",style: TextStyle(fontSize: 16,color: Colors.white))
+                      ),
 
-              ],
-            ),
+                    ],
+                  ),
+                );
+              }
           ),
 
           Container(

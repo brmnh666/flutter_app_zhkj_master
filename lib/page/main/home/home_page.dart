@@ -10,8 +10,10 @@ import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -58,16 +60,20 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
             Stack(
               children: <Widget>[
                 /*顶部 显示*/
-                Container(
-                  width: double.infinity,
-                  height: 170,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-                      )
-                  ),
-
+                Store.connect<ConfigModel>(
+                    builder: (context, ConfigModel snapshot, child) {
+                      return Container(
+                        width: double.infinity,
+                        height: 170,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: ThemeUtil.setActionBar(snapshot.theme)
+                            )
+                        ),
+                      );
+                    }
                 ),
+
 
                 /*首页 分享商城  客服*/
                 Container(
@@ -418,11 +424,6 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                              );
                            }
                        ),
-
-
-
-
-
 
                  )
 

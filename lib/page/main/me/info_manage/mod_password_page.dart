@@ -4,9 +4,11 @@ import 'package:flutter_app_zhkj_master/bean/base_response.dart';
 import 'package:flutter_app_zhkj_master/bean/info_result.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 /*修改密码*/
 class MyModPassWordPage extends StatefulWidget{
   @override
@@ -15,7 +17,6 @@ class MyModPassWordPage extends StatefulWidget{
     return _MyModPassWordPage();
   }
 }
-
 class _MyModPassWordPage extends State<MyModPassWordPage>{
  InfoResult infoResult; //个人信息
  final TextEditingController controller_old=TextEditingController();
@@ -27,8 +28,6 @@ class _MyModPassWordPage extends State<MyModPassWordPage>{
    super.initState();
    SpHelper.getUserName().then((UserName)=> _GetInfo(UserName));
  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +47,25 @@ class _MyModPassWordPage extends State<MyModPassWordPage>{
           height: 20,
         ), onPressed: (){Navigator.pop(context);}
         ),
+        flexibleSpace: Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return  Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
 
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+       //Container(
+       //  decoration: BoxDecoration(
+       //      gradient: LinearGradient(
+       //          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+       //      )
+       //  ),
+       //) ,
       ),
 
       body: Column(
@@ -168,16 +178,23 @@ class _MyModPassWordPage extends State<MyModPassWordPage>{
           /*确认按钮*/
 
           GestureDetector(
-            child:Container(
-              padding: EdgeInsets.only(top: 12,bottom: 12),
-              margin: EdgeInsets.only(left: 10,right: 10,top: 20),
-              alignment: Alignment.center,
-              child: Text("修改",style: TextStyle(fontSize: 15,color: Colors.white)),
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(8))
-              ),
-            ) ,
+            child:
+
+            Store.connect<ConfigModel>(
+                builder: (context, ConfigModel snapshot, child) {
+                  return Container(
+                    child:Center(child:
+                    Text("修改",style: TextStyle(fontSize: 15,color: Colors.white))),
+                    padding: EdgeInsets.only(top: 12,bottom: 12),
+                    width: double.infinity,
+                    margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                    decoration: BoxDecoration(
+                        color: ThemeUtil.SetFontColor(snapshot.theme),
+                        borderRadius: BorderRadius.all(Radius.circular(5))
+                    ),
+                  );
+                }
+            ),
             onTap:(){
               if(controller_old.text==null||controller_old.text==""){
                 Fluttertoast.showToast(msg: "请输入旧密码");

@@ -3,7 +3,11 @@ import 'package:flutter_app_zhkj_master/bean/base_response.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FeedbackPage extends StatefulWidget{
@@ -35,13 +39,18 @@ class _FeedbackPage extends State<FeedbackPage>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace: Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return  Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
+
         elevation: 0,
       ),
       body: Column(
@@ -81,7 +90,8 @@ class _FeedbackPage extends State<FeedbackPage>{
             width: double.infinity,
             decoration: BoxDecoration(
                 color: Color.fromARGB(180,240,240,240),
-                border: Border.all(width: 0.2,color: Colors.grey)
+                border: Border.all(width: 0.2,color: Colors.grey),
+                borderRadius: BorderRadius.all(Radius.circular(3))
             ),
             child: TextField(
               controller: _controller,
@@ -98,18 +108,28 @@ class _FeedbackPage extends State<FeedbackPage>{
 
           /*提交*/
           GestureDetector(
-            child:Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              height: 45,
-              margin: EdgeInsets.only(left: 10,right: 10,top: 5),
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(5))
-              ),
-              child: Text("提 交",style: TextStyle(color: Colors.white,fontSize: 16)),
-            )
-            ,
+            child:
+
+            Store.connect<ConfigModel>(
+                builder: (context, ConfigModel snapshot, child) {
+                  return Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: 45,
+                      margin: EdgeInsets.only(left: 10,right: 10,top: 5),
+                       decoration: BoxDecoration(
+                       color: ThemeUtil.SetFontColor(snapshot.theme),
+                       borderRadius: BorderRadius.all(Radius.circular(5))
+                      ),
+                        child: Text("提 交",style: TextStyle(color: Colors.white,fontSize: 16)
+                      ),
+                    );
+                }
+            ),
+
+
+
+
             onTap: (){
               if(_controller.text==""){
                 Fluttertoast.showToast(msg: "请输入反馈内容");

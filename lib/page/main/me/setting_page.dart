@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 
 class SettingPage extends StatefulWidget{
   @override
@@ -11,8 +13,10 @@ class SettingPage extends StatefulWidget{
 }
 class _SettingPage extends State<SettingPage>{
 
-  int _position=0;
-  String _hint="当前选中了默认蓝";
+  bool isCheck_install= true;
+  bool isCheck_maintain =true;
+  //int _position=0;
+ String _hint="当前选中了";
   @override
   void initState() {
     super.initState();
@@ -35,99 +39,244 @@ class _SettingPage extends State<SettingPage>{
           height: 20,
         ), onPressed: (){ Navigator.pop(context);}
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace: Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
       ),
-     body: Column(
-       children: <Widget>[
-         /*设置主题颜色*/
-         Container(
-           width: double.infinity,
-           height: 120,
-           color: Colors.white,
-           child: Column(
-             children: <Widget>[
-               /**/
-               Container(
-                 alignment: Alignment.centerLeft,
-                 width: double.infinity,
-                 padding: EdgeInsets.only(left: 10),
-                 height: 40,
-                 decoration: BoxDecoration(
-                     border: Border(top: BorderSide(color: Colors.grey,width: 0.3),bottom:BorderSide(color: Colors.grey,width: 0.3))
-                  ),
-                  child:
-                  Row(children: <Widget>[
-                   Text("设置主题色",style: TextStyle(fontSize: 14)),
-                    Expanded(child: Container(
-                      alignment: Alignment.centerRight,
-                      margin: EdgeInsets.only(right: 10),
-                      child: Container(
-                        padding: EdgeInsets.only(left: 4,right: 4,top: 2,bottom: 2),
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(200, 255,152,0),
-                          borderRadius: BorderRadius.all(Radius.circular(4))
-                        ),
-                        
-                        child: Text(_hint,style: TextStyle(fontSize: 12,color: Colors.white)),
-                      )
+     body:
 
-                    ))
-                    
-                 ],)
-
-
-
-
-               ),
-
-               Container(
-                 width: double.infinity,
-                 height: 80,
-                 padding: EdgeInsets.only(left: 10,right: 10),
-                 decoration: BoxDecoration(
-                   border: Border(bottom: BorderSide(color: Colors.grey,width: 0.2))
+     SingleChildScrollView(
+       child:Column(
+         children: <Widget>[
+           /*安装工单*/
+           Container(
+             width: double.infinity,
+             height: 55,
+             decoration: BoxDecoration(
+                 color: Colors.white,
+                 border: Border(top: BorderSide(color: Colors.grey,width: 0.3))
+             ),
+             child: Row(
+               children: <Widget>[
+                 Padding(padding: EdgeInsets.only(left: 10),child:Text("安装工单")),
+                 Expanded(flex: 4,
+                   child: Container(),
                  ),
-                 child:Row(
-                   children: <Widget>[
-                     Expanded(flex:1,child:
-                     selecttheme_item(0, "blue","默认蓝")
-                     ),
-                     Expanded(flex:1,child:
-                     selecttheme_item(1, "yellow","柠檬黄")),
-                     Expanded(flex:1,child:
-                     selecttheme_item(2, "green","薄荷绿")
-                     ),
-                     Expanded(flex:1,child:
-                     Container(
-                       width: 56,
-                       height: 56,
-                       alignment: Alignment.center,
-                       padding: EdgeInsets.all(8),
-                       margin: EdgeInsets.only(left: 14,right: 14),
-                       decoration: BoxDecoration(
-                         color: Colors.white,
-                         borderRadius: BorderRadius.all(Radius.circular(28)),
-                         border: Border.all(color: Colors.black,width: 0.2)
+                 Expanded(flex:1,child:
+                   Store.connect<ConfigModel>(
+                     builder: (context, ConfigModel snapshot, child) {
+                       return Switch(
+                           value: isCheck_install,
+                           activeColor:ThemeUtil.SetFontColor(snapshot.theme),     // 激活时原点颜色
+                           onChanged: (bool val) {
+                             this.setState(() {
+                               isCheck_install=!isCheck_install;
+                             });
+                           },
+                         );
+                     }
+                 ),
 
-                       ),
-                       child: Text("更多主题敬请期待",style: TextStyle(fontSize: 10)),
-                     )
 
-                     ),
-                   ],
+
                  )
-               ),
-             ],
+               ],
+             ),
            ),
-         )
-       ],
+
+           /*维修工单*/
+           Container(
+             width: double.infinity,
+             height: 55,
+             decoration: BoxDecoration(
+                 color: Colors.white,
+                 border: Border(top: BorderSide(color: Colors.grey,width: 0.3))
+             ),
+             child: Row(
+               children: <Widget>[
+                 Padding(padding: EdgeInsets.only(left: 10),child:Text("维修工单")),
+                 Expanded(flex: 4,
+                   child: Container(),
+                 ),
+                 Expanded(flex:1,child:
+                 Store.connect<ConfigModel>(
+                     builder: (context, ConfigModel snapshot, child) {
+                       return Switch(
+                         value: isCheck_maintain,
+                         activeColor:ThemeUtil.SetFontColor(snapshot.theme),     // 激活时原点颜色
+                         onChanged: (bool val) {
+                           this.setState(() {
+                             isCheck_maintain=!isCheck_maintain;
+                           });
+                         },
+                       );
+                     }
+                 ),
+                 )
+               ],
+             ),
+           ),
+           /*清除缓存*/
+           Container(
+             width: double.infinity,
+             height: 55,
+             decoration: BoxDecoration(
+                 color: Colors.white,
+                 border: Border(top: BorderSide(color: Colors.grey,width: 0.3))
+             ),
+             child: Row(children: <Widget>[
+               Padding(padding: EdgeInsets.only(left: 10),child:Text("清除缓存")),
+               Expanded(child: Container(
+                 alignment: Alignment.centerRight,
+                 margin: EdgeInsets.only(right: 15),
+                 child: Image.asset(ImageHelper.wrapAssets("ic_clean.png"),width: 24,height: 24),
+               ))
+             ],
+             ),
+           ),
+
+           /*检查更新*/
+           GestureDetector(
+             child:Container(
+               width: double.infinity,
+               height: 55,
+               decoration: BoxDecoration(
+                   color: Colors.white,
+                   border: Border(top: BorderSide(color: Colors.grey,width: 0.3))
+               ),
+               child: Row(children: <Widget>[
+                 Padding(padding: EdgeInsets.only(left: 10),child:Text("检查更新")),
+                 Expanded(child: Container(
+                     alignment: Alignment.centerRight,
+                     margin: EdgeInsets.only(right: 17),
+                     child:
+                     Image.asset(ImageHelper.wrapAssets("ic_update.png"),width: 22,height: 22),
+
+                 ))
+               ],
+               ),
+             ),
+             onTap: (){
+
+             },
+           ),
+
+
+
+
+           /*设置主题颜色*/
+           Container(
+             width: double.infinity,
+             height: 120,
+             color: Colors.white,
+             margin: EdgeInsets.only(top: 12),
+             child: Column(
+               children: <Widget>[
+                 /**/
+                 Container(
+                     alignment: Alignment.centerLeft,
+                     width: double.infinity,
+                     padding: EdgeInsets.only(left: 10),
+                     height: 40,
+                     decoration: BoxDecoration(
+                         border: Border(top: BorderSide(color: Colors.grey,width: 0.3),bottom:BorderSide(color: Colors.grey,width: 0.3))
+                     ),
+                     child:
+                     Row(children: <Widget>[
+                       Text("设置主题色",style: TextStyle(fontSize: 14)),
+                       Expanded(child: Container(
+                           alignment: Alignment.centerRight,
+                           margin: EdgeInsets.only(right: 10),
+                           child: Container(
+                             padding: EdgeInsets.only(left: 4,right: 4,top: 2,bottom: 2),
+                             decoration: BoxDecoration(
+                                 color: Color.fromARGB(200, 255,152,0),
+                                 borderRadius: BorderRadius.all(Radius.circular(4))
+                             ),
+
+                             child: Text("${_hint}${ThemeUtil.GetColorName(Store.value<ConfigModel>(context).theme)}"
+                                 ,style: TextStyle(fontSize: 12,color: Colors.white)),
+                           )
+
+                       ))
+
+                     ],)
+
+
+
+
+                 ),
+
+                 Container(
+                     width: double.infinity,
+                     height: 80,
+                     padding: EdgeInsets.only(left: 10,right: 10),
+                     decoration: BoxDecoration(
+                         border: Border(bottom: BorderSide(color: Colors.grey,width: 0.2))
+                     ),
+                     child:Row(
+                       children: <Widget>[
+                         Expanded(flex:1,child:
+                         selecttheme_item(0, "blue","默认蓝")
+                         ),
+                         Expanded(flex:1,child:
+                         selecttheme_item(1, "yellow","柠檬黄")),
+                         Expanded(flex:1,child:
+                         selecttheme_item(2, "green","薄荷绿")
+                         ),
+                         Expanded(flex:1,child:
+                         Container(
+                           width: 56,
+                           height: 56,
+                           alignment: Alignment.center,
+                           padding: EdgeInsets.all(8),
+                           margin: EdgeInsets.only(left: 14,right: 14),
+                           decoration: BoxDecoration(
+                               color: Colors.white,
+                               borderRadius: BorderRadius.all(Radius.circular(28)),
+                               border: Border.all(color: Colors.black,width: 0.2)
+
+                           ),
+                           child: Text("更多主题敬请期待",style: TextStyle(fontSize: 10)),
+                         )
+
+                         ),
+                       ],
+                     )
+                 ),
+               ],
+             ),
+           ),
+
+           /*退出登录*/
+           Container(
+             width: double.infinity,
+             height: 50,
+             margin: EdgeInsets.only(top: 12),
+             alignment: Alignment.center,
+             decoration: BoxDecoration(
+                 color: Colors.white,
+                 border: Border(top: BorderSide(color: Colors.grey,width: 0.3),bottom: BorderSide(color: Colors.grey,width: 0.3))
+             ),
+             child: Text("退出登录",style: TextStyle(color: Colors.red,fontSize: 16),),
+           )
+           
+           
+           
+         ],
+       ),
      )
+
+
+
 
     );
   }
@@ -137,14 +286,14 @@ class _SettingPage extends State<SettingPage>{
       case "blue":
         return Colors.blue;
       case "yellow":
-        return Colors.yellow;
+        return Color.fromARGB(255,247,210,127);
       case "green":
-        return Colors.green;
+        return Color.fromARGB(255,140,193,75);
     }
   }
-
+  
   Widget selecttheme_item(int index,String color,String strColor){
-    return index==_position?
+    return index==ThemeUtil.GetColorLocation(Store.value<ConfigModel>(context).theme)?
         //选中情况
       Container(
         width: 56,
@@ -159,7 +308,7 @@ class _SettingPage extends State<SettingPage>{
                        offset: Offset(0.0, 0.0),
                        blurRadius: 2.0,
                        spreadRadius: 1.0
-                       ),
+                        ),
                        ],
 
         ),
@@ -180,11 +329,10 @@ class _SettingPage extends State<SettingPage>{
       ),
       onTap: () {
           setState(() {
-            _position=index;
-            _hint="当前选中了${strColor}";
+            Store.value<ConfigModel>(context).changeTheme(color);
             /*将所选的颜色存入sp中*/
-           //SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-           //sharedPreferences.setString("Theme", color);
+            //SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+            //sharedPreferences.setString("Theme", color);
           });
 
 

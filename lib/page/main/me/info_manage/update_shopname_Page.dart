@@ -5,8 +5,10 @@ import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/bean/updataname.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /*修改名称*/
@@ -40,13 +42,27 @@ class _MyupdateShopname extends State<MyupdateShopname>{
         ), onPressed: (){Navigator.pop(context);}
         ),
 
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace:
+
+        Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return  Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
+
+       // Container(
+       //   decoration: BoxDecoration(
+       //       gradient: LinearGradient(
+       //           colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+       //       )
+       //   ),
+       // ) ,
       ),
 
       body:Column(children: <Widget>[
@@ -80,16 +96,23 @@ class _MyupdateShopname extends State<MyupdateShopname>{
 
 
        GestureDetector(
-         child: Container(
-         child:Center(child:Text("修改",style: TextStyle(fontSize: 15,color: Colors.white))),
-         padding: EdgeInsets.only(top: 12,bottom: 12),
-         width: double.infinity,
-         margin: EdgeInsets.only(left: 10,right: 10,top: 10),
-         decoration: BoxDecoration(
-         color: Colors.blueAccent,
-         borderRadius: BorderRadius.all(Radius.circular(5))
+         child:
+         Store.connect<ConfigModel>(
+             builder: (context, ConfigModel snapshot, child) {
+               return Container(
+                 child:Center(child:
+                 Text("修改",style: TextStyle(fontSize: 15,color: Colors.white))),
+                 padding: EdgeInsets.only(top: 12,bottom: 12),
+                 width: double.infinity,
+                 margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                 decoration: BoxDecoration(
+                     color: ThemeUtil.SetFontColor(snapshot.theme),
+                     borderRadius: BorderRadius.all(Radius.circular(5))
+                 ),
+               );
+             }
          ),
-       ),
+
        onTap: ()
        {
          if(controller.text==null||controller.text==""){

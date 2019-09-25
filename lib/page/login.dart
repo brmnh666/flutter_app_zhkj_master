@@ -4,6 +4,8 @@ import 'package:flutter_app_zhkj_master/bean/base_response.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -144,6 +146,9 @@ class _MyLoginPage extends State<MyLoginPage>{
           Fluttertoast.showToast(msg: "登陆成功");
           sharedPreferences.setString("userName",userName);
           sharedPreferences.setString("adminToken",baseResponse.data.item2);
+          Store.value<ConfigModel>(context)
+              .initTheme("blue");
+
           /*跳到主界面*/
            NavigatorUtil.goMainPage(context);
          }else{

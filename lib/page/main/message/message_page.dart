@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'message/my_message_page.dart';
 import 'notification/notifucation_page.dart';
 
@@ -45,13 +48,19 @@ class _MyHomeItemPage extends State<MyMessageItemPage>{
           length: 2,
           child:Scaffold(
               appBar: AppBar(
-                flexibleSpace:Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-                      )
-                  ),
-                ) ,
+                flexibleSpace:
+                Store.connect<ConfigModel>(
+                    builder: (context, ConfigModel snapshot, child) {
+                      return  Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: ThemeUtil.setActionBar(snapshot.theme)
+                            )
+                        ),
+                      );
+                    }
+                ),
+
                 bottom: TabBar(tabs: title,
                   labelColor: Colors.white,
                   labelStyle: TextStyle(fontSize: 20),

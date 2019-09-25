@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -17,6 +18,7 @@ import 'page/main/me/me_page.dart';
 import 'page/main/message/message_page.dart';
 import 'page/main/shop/shop_page.dart';
 import 'provider/index.dart';
+import 'provider/model/ConfigModel.dart';
 import 'provider/model/UserModel.dart';
 
 
@@ -105,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
               infoResult.data.data[0].phone,
               infoResult.data.data[0].address
            );
+
           break;
       }
     });
@@ -161,7 +164,9 @@ class _BottomBarPage extends State<BottomBarPage>{
          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
          //悬浮按钮
          floatingActionButton: FloatingActionButton(
-             child: Icon(Icons.add),
+             backgroundColor: ThemeUtil.SetFontColor(Store.value<ConfigModel>(context).theme),
+             child: Icon(
+                 Icons.add),
              onPressed: (){
                Fluttertoast.showToast(msg: "未开发");
              }),
@@ -198,9 +203,9 @@ class _BottomBarPage extends State<BottomBarPage>{
       EdgeInsetsGeometry padding =  EdgeInsets.only(top: 8.0);
       TextStyle textStyle = TextStyle(fontSize: 12.0,color: Colors.grey);
       if(selectIndex==index){ //选中状态的文字样式
-        Select=iconData+"_after.png";
+        Select=iconData+"_after${ThemeUtil.GetPhotoColor(Store.value<ConfigModel>(context).theme)}.png";
         padding =  EdgeInsets.only(top:8.0);
-        textStyle = TextStyle(fontSize: 12.0,color: Colors.blue);
+        textStyle = TextStyle(fontSize: 12.0,color: ThemeUtil.SetFontColor(Store.value<ConfigModel>(context).theme));
       }
       padItem=Padding(
           padding: padding,
@@ -213,7 +218,7 @@ class _BottomBarPage extends State<BottomBarPage>{
                      color: iconColor,
                    size: iconSize,
                    ),*/
-                  Image.asset(ImageHelper.wrapAssets(Select),width: 20,height: 20,),
+                  Image.asset(ImageHelper.wrapAssets(Select),width: 20,height: 20),
                      Text(title,
                      style: textStyle
               )

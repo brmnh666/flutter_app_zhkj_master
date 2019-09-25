@@ -3,6 +3,9 @@ import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/bean/get_notifucation_response_entity.dart' as notifucation;
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 
 class MyNotifucationListPage extends StatefulWidget{
   final String type;
@@ -57,18 +60,16 @@ class _MyNotifucationListPage extends State<MyNotifucationListPage>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [
-                    Colors.cyan,
-                    Colors.blue,
-                    Colors.blueAccent,
-                    Colors.blue,
-                    Colors.cyan
-                  ]
-              )
-          ),
+         flexibleSpace: Store.connect<ConfigModel>(
+         builder: (context, ConfigModel snapshot, child) {
+           return  Container(
+           decoration: BoxDecoration(
+           gradient: LinearGradient(
+           colors: ThemeUtil.setActionBar(snapshot.theme)
+             )
+           ),
+          );
+         }
         ),
         elevation: 0.0,
       ),

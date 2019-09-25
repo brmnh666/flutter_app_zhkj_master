@@ -4,7 +4,10 @@ import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 
 import 'package:flutter_app_zhkj_master/bean/get_message_response_entity.dart' as message;
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
 class MyTransactionListPage extends StatefulWidget{
   @override
@@ -42,19 +45,30 @@ class _MyTransactionListPage extends State<MyTransactionListPage>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [
-                    Colors.cyan,
-                    Colors.blue,
-                    Colors.blueAccent,
-                    Colors.blue,
-                    Colors.cyan
-                  ]
-              )
-          ),
-        ),
+        flexibleSpace: Store.connect<ConfigModel>(
+           builder: (context, ConfigModel snapshot, child) {
+            return  Container(
+             decoration: BoxDecoration(
+             gradient: LinearGradient(
+             colors: ThemeUtil.setActionBar(snapshot.theme)
+                )
+             ),
+             );
+           }
+           ),
+        //Container(
+        //  decoration: BoxDecoration(
+        //      gradient: LinearGradient(
+        //          colors: [
+        //            Colors.cyan,
+        //            Colors.blue,
+        //            Colors.blueAccent,
+        //            Colors.blue,
+        //            Colors.cyan
+        //          ]
+        //      )
+        //  ),
+        //),
         elevation: 0.0,
       ),
       body:

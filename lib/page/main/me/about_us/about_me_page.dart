@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 
 class AboutMePage extends StatefulWidget{
   @override
@@ -28,13 +31,25 @@ class _AboutMePage extends State<AboutMePage>{
           NavigatorUtil.goBack(context);
          }
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace:
+        Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return  Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
+        //Container(
+        //  decoration: BoxDecoration(
+        //      gradient: LinearGradient(
+        //          colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
+        //      )
+        //  ),
+        //) ,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -79,7 +94,15 @@ class _AboutMePage extends State<AboutMePage>{
                 Expanded(child: Container(
                   margin: EdgeInsets.only(right: 10),
                   alignment: Alignment.centerRight,
-                  child: Text("www.xigyu.com",style: TextStyle(color: Colors.blue),),
+                  child:
+                  Store.connect<ConfigModel>(
+                      builder: (context, ConfigModel snapshot, child) {
+                        return Text("www.xigyu.com",style: TextStyle(color: ThemeUtil.SetFontColor(snapshot.theme)));
+                      }
+                  ),
+
+
+
                 )
                 )
               ],

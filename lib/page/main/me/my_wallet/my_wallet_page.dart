@@ -10,7 +10,9 @@ import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 
 class MyWalletPage extends StatefulWidget{
   @override
@@ -85,13 +87,18 @@ class _MyWalletPage extends State<MyWalletPage>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace:Container(
+        flexibleSpace: Store.connect<ConfigModel>(
+          builder: (context, ConfigModel snapshot, child) {
+          return  Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+          gradient: LinearGradient(
+          colors: ThemeUtil.setActionBar(snapshot.theme)
+           )
+         ),
+         );
+       }
+       ),
+
         elevation: 0.0,
       ),
       body:
@@ -102,15 +109,22 @@ class _MyWalletPage extends State<MyWalletPage>{
         Column(children: <Widget>[
           Stack(
             children: <Widget>[
-              Container(
-                width: double.infinity,
-                height: 75,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-                    )
-                ),
-              ),
+
+              Store.connect<ConfigModel>(
+                  builder: (context, ConfigModel snapshot, child) {
+                    return
+                      Container(
+                        width: double.infinity,
+                        height: 75,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: ThemeUtil.setActionBar(snapshot.theme)
+                            )
+                        ),
+                      );
+
+                  }
+               ),
               Container(
                 width: double.infinity,
                 height: 225,
