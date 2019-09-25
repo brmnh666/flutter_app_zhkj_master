@@ -26,7 +26,7 @@ class ThemeUtil{
     }
   }
   /*返回颜色图片命名已_为基准 默认为""*/
-  static String GetPhotoColor(String theme){
+  static String SetPhotoColor(String theme){
     switch(theme){
       case "blue":
         return "";
@@ -49,6 +49,20 @@ class ThemeUtil{
        return Color.fromARGB(255,247,210,127);
    }
   }
+  /*设置透明颜色*/
+  static Color SetTransparencyColor(String theme)
+  {switch(theme){
+      case "blue":
+        return Color.fromARGB(60,22,144,255);
+      case "green":
+        return Color.fromARGB(60, 140,193,75);
+      case "yellow":
+        return Color.fromARGB(60,247,210,127);
+    }
+  }
+
+
+
   /*设置actionbar的渐变颜色*/
   static List<Color> setActionBar(String theme){
   switch(theme){

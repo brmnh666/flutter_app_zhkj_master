@@ -132,7 +132,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                               Store.connect<ConfigModel>(
                                   builder: (context, ConfigModel snapshot, child) {
                                     return Image.asset(
-                                          ImageHelper.wrapAssets("icon_me_all_orders${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                          ImageHelper.wrapAssets("icon_me_all_orders${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                           width: 30,height: 30);
                                   }
                               ),
@@ -164,7 +164,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                                 Store.connect<ConfigModel>(
                                     builder: (context, ConfigModel snapshot, child) {
                                       return Image.asset(
-                                          ImageHelper.wrapAssets("icon_me_return_sheet${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                          ImageHelper.wrapAssets("icon_me_return_sheet${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                           width: 30,height: 30);
                                     }
                                 ),
@@ -195,7 +195,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                               Store.connect<ConfigModel>(
                                   builder: (context, ConfigModel snapshot, child) {
                                     return Image.asset(
-                                        ImageHelper.wrapAssets("icon_me_confirmed${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                        ImageHelper.wrapAssets("icon_me_confirmed${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                         width: 30,height: 30);
                                   }
                               ),
@@ -225,7 +225,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                               Store.connect<ConfigModel>(
                                   builder: (context, ConfigModel snapshot, child) {
                                     return Image.asset(
-                                        ImageHelper.wrapAssets("icon_me_finish${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                        ImageHelper.wrapAssets("icon_me_finish${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                         width: 30,height: 30);
                                   }
                               ),
@@ -264,7 +264,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                           Store.connect<ConfigModel>(
                               builder: (context, ConfigModel snapshot, child) {
                                 return Image.asset(
-                                    ImageHelper.wrapAssets("personal${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                    ImageHelper.wrapAssets("personal${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                     width: 20,height: 20);
                               }
                           ),
@@ -302,7 +302,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                             Store.connect<ConfigModel>(
                                 builder: (context, ConfigModel snapshot, child) {
                                   return Image.asset(
-                                      ImageHelper.wrapAssets("wallet${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      ImageHelper.wrapAssets("wallet${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                       width: 20,height: 20);
                                 }
                             ),
@@ -340,7 +340,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                           child: Store.connect<ConfigModel>(
                               builder: (context, ConfigModel snapshot, child) {
                                 return Image.asset(
-                                    ImageHelper.wrapAssets("management${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                    ImageHelper.wrapAssets("management${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                     width: 20,height: 20);
                               }
                           ),
@@ -375,7 +375,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                           Store.connect<ConfigModel>(
                               builder: (context, ConfigModel snapshot, child) {
                                 return Image.asset(
-                                    ImageHelper.wrapAssets("management${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                    ImageHelper.wrapAssets("management${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                     width: 20,height: 20);
                               }
                           ),
@@ -407,7 +407,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                             Store.connect<ConfigModel>(
                                 builder: (context, ConfigModel snapshot, child) {
                                   return Image.asset(
-                                      ImageHelper.wrapAssets("erweima${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      ImageHelper.wrapAssets("erweima${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                       width: 20,height: 20);
                                 }
                             ),
@@ -446,7 +446,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                             Store.connect<ConfigModel>(
                                 builder: (context, ConfigModel snapshot, child) {
                                   return Image.asset(
-                                      ImageHelper.wrapAssets("kefu${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      ImageHelper.wrapAssets("kefu${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                       width: 20,height: 20);
                                 }
                             ),
@@ -485,7 +485,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                             Store.connect<ConfigModel>(
                                 builder: (context, ConfigModel snapshot, child) {
                                   return Image.asset(
-                                      ImageHelper.wrapAssets("setting${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      ImageHelper.wrapAssets("setting${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                       width: 20,height: 20);
                                 }
                             ),
@@ -524,7 +524,7 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                             Store.connect<ConfigModel>(
                                 builder: (context, ConfigModel snapshot, child) {
                                   return Image.asset(
-                                      ImageHelper.wrapAssets("about${ThemeUtil.GetPhotoColor(snapshot.theme)}.png"),
+                                      ImageHelper.wrapAssets("about${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
                                       width: 20,height: 20);
                                 }
                             ),

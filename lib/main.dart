@@ -203,7 +203,7 @@ class _BottomBarPage extends State<BottomBarPage>{
       EdgeInsetsGeometry padding =  EdgeInsets.only(top: 8.0);
       TextStyle textStyle = TextStyle(fontSize: 12.0,color: Colors.grey);
       if(selectIndex==index){ //选中状态的文字样式
-        Select=iconData+"_after${ThemeUtil.GetPhotoColor(Store.value<ConfigModel>(context).theme)}.png";
+        Select=iconData+"_after${ThemeUtil.SetPhotoColor(Store.value<ConfigModel>(context).theme)}.png";
         padding =  EdgeInsets.only(top:8.0);
         textStyle = TextStyle(fontSize: 12.0,color: ThemeUtil.SetFontColor(Store.value<ConfigModel>(context).theme));
       }

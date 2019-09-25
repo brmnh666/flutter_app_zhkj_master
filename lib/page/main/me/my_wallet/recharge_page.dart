@@ -10,7 +10,11 @@ import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/model/UserModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
 
@@ -77,13 +81,21 @@ class _RechargePage extends State<RechargePage>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace:
+
+        Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return   Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+              );
+            }
+        ),
+
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -204,7 +216,16 @@ class _RechargePage extends State<RechargePage>{
                               children: <Widget>[
                               Text("同意并阅读", style:TextStyle(fontSize: 14,color: Colors.black)),
                               GestureDetector(
-                                child: Text("《充值服务协议》",style:TextStyle(color:Colors.blue,fontSize: 14,fontWeight: FontWeight.w600)),
+                                child:
+                                Store.connect<ConfigModel>(
+                                    builder: (context, ConfigModel snapshot, child) {
+                                      return Text("《充值服务协议》",
+                                          style:TextStyle(color:ThemeUtil.SetFontColor(snapshot.theme),
+                                          fontSize: 14,fontWeight: FontWeight.w600));
+                                    }
+                                ),
+
+                                
                                 onTap: (){
                                   NavigatorUtil.goWebPage(context,
                                       "https://admin.xigyu.com/Agreement",
@@ -219,30 +240,34 @@ class _RechargePage extends State<RechargePage>{
                     ),
 
                     GestureDetector(
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 10,left: 10,right: 10,bottom: 10),
-                        height: 45,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255,22,144,255),
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                        ),
-                        child:
-                        RichText(
-                          text: TextSpan(
-                              text: "立即充值",
-                              style:TextStyle(fontSize: 15,color: Colors.black),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: " (¥${_recharge_money})",
-                                  style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w500),
-                                )
-                              ]
-                          ),
-                        ) ,
-
+                      child: Store.connect<ConfigModel>(
+                          builder: (context, ConfigModel snapshot, child) {
+                            return Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 10,left: 10,right: 10,bottom: 10),
+                              height: 45,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: ThemeUtil.SetFontColor(snapshot.theme),
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                              ),
+                              child: RichText(
+                                text: TextSpan(
+                                    text: "立即充值",
+                                    style:TextStyle(fontSize: 15,color: Colors.black),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: " (¥${_recharge_money})",
+                                        style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w500),
+                                      )
+                                    ]
+                                ),
+                              ) ,
+                            );
+                          }
                       ),
+
+                      
                       onTap: (){
                         if(_index_paytype==0){//支付宝支付
                           if(_recharge_money==""){
@@ -290,43 +315,61 @@ class _RechargePage extends State<RechargePage>{
             /*显示下角标*/
             Container(
               alignment: Alignment.bottomRight,
-              child:  Image.asset(ImageHelper.wrapAssets("ic_jiaobiao.png"),width: 20,height: 20),
-            ),
-            Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(60,22,144,255),
-                  borderRadius: BorderRadius.all(Radius.circular(7)),
-                  border: Border.all(color: Color.fromARGB(255,22,144,255),width: 0.7)
+              child:
+
+              Store.connect<ConfigModel>(
+                  builder: (context, ConfigModel snapshot, child) {
+                    return  Image.asset(ImageHelper.wrapAssets("ic_jiaobiao${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),width: 20,height: 20);
+                  }
               ),
-              child: position==6?
-              Row(children: <Widget>[
-                Expanded(child:
-                Padding(padding: EdgeInsets.only(left: 10,right: 5),
-                  child:TextField(
-                    controller: _controller,
-                    textDirection: TextDirection.rtl,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 5,bottom: 5),
-                      disabledBorder: InputBorder.none,
-                      enabledBorder:  InputBorder.none,
-                      focusedBorder:   InputBorder.none,
-                    ),
-                    //光标设置
-                    cursorColor: Colors.black,
-                    cursorWidth: 1,
-                    keyboardType: TextInputType.number,
-                  ),
-                )
-                ),
-                Padding(padding: EdgeInsets.only(right: 10),
-                  child:Text("元"),)
-              ]): Text(title,style: TextStyle(color: Colors.black,fontSize: 13)
-              ),
+
             ),
+
+            Store.connect<ConfigModel>(
+                builder: (context, ConfigModel snapshot, child) {
+                  return
+                    Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: ThemeUtil.SetTransparencyColor(snapshot.theme),
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                          border: Border.all(color:ThemeUtil.SetFontColor(snapshot.theme),
+                              width: 0.7)
+                      ),
+                      child: position==6?
+                      Row(children: <Widget>[
+                        Expanded(child:
+                        Padding(padding: EdgeInsets.only(left: 10,right: 5),
+                          child:TextField(
+                            controller: _controller,
+                            textDirection: TextDirection.rtl,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(top: 5,bottom: 5),
+                              disabledBorder: InputBorder.none,
+                              enabledBorder:  InputBorder.none,
+                              focusedBorder:   InputBorder.none,
+                            ),
+                            //光标设置
+                            cursorColor: Colors.black,
+                            cursorWidth: 1,
+                            keyboardType: TextInputType.number,
+                          ),
+                        )
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 10),
+                          child:Text("元"),)
+                      ]): Text(title,style: TextStyle(color: Colors.black,fontSize: 13)
+                      ),
+                    );
+
+                }
+            ),
+
+
+
           ]
           ),
-      onTap: (){
+         onTap: (){
         setState(() {
           if(position==6){
             _recharge_money="";
@@ -372,25 +415,40 @@ class _RechargePage extends State<RechargePage>{
       child:
         Stack(children: <Widget>[
           /*显示下角标*/
-          Container(
-            alignment: Alignment.bottomRight,
-            child:  Image.asset(ImageHelper.wrapAssets("ic_jiaobiao.png"),width: 20,height: 20),
+
+          Store.connect<ConfigModel>(
+              builder: (context, ConfigModel snapshot, child) {
+                return  Container(
+                  alignment: Alignment.bottomRight,
+                  child:  Image.asset(ImageHelper.wrapAssets("ic_jiaobiao${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),width: 20,height: 20),
+                );
+              }
           ),
-          Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Color.fromARGB(60,22,144,255),
-                borderRadius: BorderRadius.all(Radius.circular(7)),
-                border: Border.all(color: Color.fromARGB(255,22,144,255),width: 0.7)
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(ImageHelper.wrapAssets(url),width: 26,height: 26),
-                Text(title,style: TextStyle(color: Colors.black,fontSize: 12)),
-              ],
-            ),
+          
+          Store.connect<ConfigModel>(
+              builder: (context, ConfigModel snapshot, child) {
+                return Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: ThemeUtil.SetTransparencyColor(snapshot.theme),
+                      borderRadius: BorderRadius.all(Radius.circular(7)),
+                      border: Border.all(color: ThemeUtil.SetFontColor(snapshot.theme),
+                                       width: 0.7)
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset(ImageHelper.wrapAssets(url),width: 26,height: 26),
+                      Text(title,style: TextStyle(color: Colors.black,fontSize: 12)),
+                    ],
+                  ),
+                );
+              }
           ),
+          
+          
+          
+          
         ],
         ),
       onTap: (){

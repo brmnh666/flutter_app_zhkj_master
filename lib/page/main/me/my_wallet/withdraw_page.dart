@@ -8,7 +8,10 @@ import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 class WithdrawPage extends StatefulWidget{
@@ -66,13 +69,20 @@ class WithdrawPage extends StatefulWidget{
           NavigatorUtil.goBack(context);
           }
         ),
-          flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
+          flexibleSpace:
+          Store.connect<ConfigModel>(
+              builder: (context, ConfigModel snapshot, child) {
+                return Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: ThemeUtil.setActionBar(snapshot.theme)
+                      )
+                  ),
+                );
+              }
           ),
-        ) ,
+
+          
       ),
       body: Column(
         children: <Widget>[
@@ -158,13 +168,19 @@ class WithdrawPage extends StatefulWidget{
                              alignment: Alignment.centerLeft,
                              height: 40,
                              margin: EdgeInsets.only(left: 10,right: 10),
-                             child: Text(_money,
-                                 style: TextStyle(
-                                 fontSize: 30,
-                                 fontWeight: FontWeight.w600,
-                                 color: Colors.blue
-                                ),
-                                ),
+                             child: Store.connect<ConfigModel>(
+                                 builder: (context, ConfigModel snapshot, child) {
+                                   return  Text(_money,
+                                     style: TextStyle(
+                                         fontSize: 30,
+                                         fontWeight: FontWeight.w600,
+                                         color: ThemeUtil.SetFontColor(snapshot.theme)
+                                     ),
+                                   );
+                                 }
+                             ),
+
+                            
                                ) ,
                            ),
 
@@ -202,16 +218,25 @@ class WithdrawPage extends StatefulWidget{
           ),
 
           GestureDetector(
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(top: 10,bottom: 10),
-              margin: EdgeInsets.only(left: 10,top: 15,right: 19),
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(4))
-              ),
-              child: Text("预计两天后到账,确认提现",style: TextStyle(color: Colors.white,fontSize: 18)),
-            ) ,
+            child:
+
+
+            Store.connect<ConfigModel>(
+                builder: (context, ConfigModel snapshot, child) {
+                  return   Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.only(top: 10,bottom: 10),
+                    margin: EdgeInsets.only(left: 10,top: 15,right: 19),
+                    decoration: BoxDecoration(
+                        color: ThemeUtil.SetFontColor(snapshot.theme),
+                        borderRadius: BorderRadius.all(Radius.circular(4))
+                    ),
+                    child: Text("预计两天后到账,确认提现",style: TextStyle(color: Colors.white,fontSize: 18)),
+                  );
+                }
+            ),
+
+          
             onTap: (){
               if(moeny==""){
                 Fluttertoast.showToast(msg: "请输入具体金额");
@@ -648,18 +673,24 @@ class _BottomKeyboard extends State<BottomKeyboard>{
                            child: Ink(
                             color: Color.fromARGB(255,240,240,240),
                             child: InkWell(
-                              child: Container(
-                               alignment: Alignment.center,
-                               height: 100,
-                               decoration: BoxDecoration(
-                               border: Border.all(width: 0.1,color: Colors.grey),
-                              color: Colors.blue,
-                            ),
-                                 child:Text("确定",style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white))
-                          ),
+                              child: Store.connect<ConfigModel>(
+                                  builder: (context, ConfigModel snapshot, child) {
+                                    return Container(
+                                        alignment: Alignment.center,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(width: 0.1,color: Colors.grey),
+                                          color: ThemeUtil.SetFontColor(snapshot.theme),
+                                        ),
+                                        child:Text("确定",style: TextStyle(
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white))
+                                     );
+                                  }
+                               ),
+
+
                          ),
                         ),
                       )

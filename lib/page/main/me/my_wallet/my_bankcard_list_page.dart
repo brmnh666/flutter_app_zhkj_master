@@ -5,7 +5,10 @@ import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
 
 /*我的银行卡页面*/
@@ -22,7 +25,6 @@ class _BankCardList extends State<BankCardList>{
   void initState() {
     super.initState();
     SpHelper.getUserName().then((username)=>_getMyBankCard(username));
-
     /*需要更新数据操作*/
     GlobalEventBus().eventBus.on<StateChangeEvent>().listen((event){
       if(event.state==EventConfig.BANDCARD){//银行卡
@@ -34,7 +36,6 @@ class _BankCardList extends State<BankCardList>{
         }
       }
     });
-
   }
   @override
   Widget build(BuildContext context) {
@@ -56,13 +57,20 @@ class _BankCardList extends State<BankCardList>{
           NavigatorUtil.goBack(context);
         }
         ),
-        flexibleSpace:Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
+        flexibleSpace: Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: ThemeUtil.setActionBar(snapshot.theme)
+                      )
+                  ),
+                );
+            }
+        ),
+
+
       ),
       body:
       SingleChildScrollView(
@@ -136,22 +144,28 @@ class _BankCardList extends State<BankCardList>{
 
             /*添加银行卡*/
             GestureDetector(
-              child:Container(
-                height: 60,
-                width: double.infinity,
-                margin: EdgeInsets.only(top: 20,left: 13,right: 13),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(color: Colors.blue,width: 1)
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Padding(padding: EdgeInsets.only(left: 10,right: 10),child: Image.asset(ImageHelper.wrapAssets("tianjia1.png"),width: 30,height: 30)),
-                    Expanded(child:Text("添加银行卡",style: TextStyle(fontSize: 18))),
-                    Padding(padding: EdgeInsets.only(right: 5),child:Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20) ,)
-                  ],
-                ),
+              child: Store.connect<ConfigModel>(
+                  builder: (context, ConfigModel snapshot, child) {
+                    return   Container(
+                      height: 60,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(top: 20,left: 13,right: 13),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(color:ThemeUtil.SetFontColor(snapshot.theme)
+                              ,width: 1)
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(left: 10,right: 10),child: Image.asset(ImageHelper.wrapAssets("tianjia1.png"),width: 30,height: 30)),
+                          Expanded(child:Text("添加银行卡",style: TextStyle(fontSize: 18))),
+                          Padding(padding: EdgeInsets.only(right: 5),child:Image.asset(ImageHelper.wrapAssets("right_arrow.png"),width: 20,height: 20) ,)
+                        ],
+                      ),
+                    );
+                  }
               ),
+            
             onTap: (){
                NavigatorUtil.goAddBankCardPage(context);
             },

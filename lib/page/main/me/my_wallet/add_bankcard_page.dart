@@ -5,7 +5,10 @@ import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
@@ -54,15 +57,30 @@ class _AddBankCardPage extends State<AddBankCardPage>{
                 Row(children: <Widget>[
                   GestureDetector(
                     child:Padding(padding: EdgeInsets.only(left: 15,top: 15),
-                      child:Image.asset(ImageHelper.wrapAssets("arrow_left_blue.png"),width: 28,height: 28),),
+                      child:
+                      Store.connect<ConfigModel>(
+                          builder: (context, ConfigModel snapshot, child) {
+                            return Image.asset(ImageHelper.wrapAssets("arrow_left_blue${ThemeUtil.SetPhotoColor(snapshot.theme)}.png")
+                                ,width: 28,height: 28);
+                          }
+                      ),
+
+                    ),
                      onTap: (){
                     NavigatorUtil.goBack(context);
                   }),
                   /*问号提示可以绑定那些银行*/
-                  Expanded(child: Container(
-                      alignment: Alignment.centerRight,
-                      child:Padding(padding: EdgeInsets.only(right: 15,top: 15),
-                          child:Image.asset(ImageHelper.wrapAssets("ic_wenhao.png"),width: 28,height: 28))) )
+                  Expanded(child: Store.connect<ConfigModel>(
+                      builder: (context, ConfigModel snapshot, child) {
+                        return Container(
+                            alignment: Alignment.centerRight,
+                            child:Padding(padding: EdgeInsets.only(right: 15,top: 15),
+                                child:Image.asset(ImageHelper.wrapAssets("ic_wenhao${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
+                                    width: 28,height: 28))
+                        );
+                      }
+                  ),
+                  )
                 ],
                 )
 
@@ -221,15 +239,22 @@ class _AddBankCardPage extends State<AddBankCardPage>{
               child:
               _controller.text.length>=12&&_isSuccess?
                   GestureDetector(//满足条件可以添加
-                    child:   Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 22,144,255),
-                          borderRadius: BorderRadius.all(Radius.circular(2))
-                        ),
-                      child: Text("提交卡号",style: TextStyle(color: Colors.white,fontSize: 18)),
-                      ),
+                    child:
+
+                    Store.connect<ConfigModel>(
+                        builder: (context, ConfigModel snapshot, child) {
+                          return Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+                            decoration: BoxDecoration(
+                                color: ThemeUtil.SetFontColor(snapshot.theme),
+                                borderRadius: BorderRadius.all(Radius.circular(2))
+                            ),
+                            child: Text("提交卡号",style: TextStyle(color: Colors.white,fontSize: 18)),
+                          );
+
+                        }
+                    ),
                     onTap: (){
                       SpHelper.getUserName().then(
                         (username)=>_addBankCard(username,"Bank",_bankname,_controller.text)
@@ -238,15 +263,24 @@ class _AddBankCardPage extends State<AddBankCardPage>{
                      },
                      )
                     :
-                    Container(//不满足条件不可以添加
+
+              Store.connect<ConfigModel>(
+                  builder: (context, ConfigModel snapshot, child) {
+                    return Container(//不满足条件不可以添加
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(100, 22,144,255),
+                          color: ThemeUtil.SetTransparencyColor(snapshot.theme),
                           borderRadius: BorderRadius.all(Radius.circular(2))
                       ),
-                      child: Text("提交卡号",style: TextStyle(color: Color.fromARGB(255, 196,224,246),fontSize: 18)),
-                    )
+                      child: Text("提交卡号",style: TextStyle(color:
+                          ThemeUtil.SetFontColor(snapshot.theme),
+                          fontSize: 18)),
+                    );
+                  }
+              ),
+
+
 
             )
 

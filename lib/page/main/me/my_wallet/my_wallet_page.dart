@@ -151,7 +151,14 @@ class _MyWalletPage extends State<MyWalletPage>{
                               /*钱的具体数目*/
                               Container(
                                   margin: EdgeInsets.only(top: 5),
-                                  child: Text(_totle,style: TextStyle(color: Colors.blueAccent,fontSize: 30))
+                                  child:
+                                  Store.connect<ConfigModel>(
+                                      builder: (context, ConfigModel snapshot, child) {
+                                        return Text(_totle,
+                                            style: TextStyle(color: ThemeUtil.SetFontColor(snapshot.theme),
+                                            fontSize: 30));
+                                      }
+                                  ),
 
                               )
                             ],
