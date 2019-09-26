@@ -138,7 +138,16 @@ class _SettingPage extends State<SettingPage>{
                Expanded(child: Container(
                  alignment: Alignment.centerRight,
                  margin: EdgeInsets.only(right: 15),
-                 child: Image.asset(ImageHelper.wrapAssets("ic_clean.png"),width: 24,height: 24),
+                 child:
+                 Store.connect<ConfigModel>(
+                     builder: (context, ConfigModel snapshot, child) {
+                       return  Image.asset(
+                               ImageHelper.wrapAssets("ic_clean${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
+                                width: 25,height: 25);
+                     }
+                 ),
+                 
+                
                ))
              ],
              ),
@@ -158,10 +167,15 @@ class _SettingPage extends State<SettingPage>{
                  Expanded(child: Container(
                      alignment: Alignment.centerRight,
                      margin: EdgeInsets.only(right: 17),
-                     child:
-                     Image.asset(ImageHelper.wrapAssets("ic_update.png"),width: 22,height: 22),
-
-                 ))
+                     child: Store.connect<ConfigModel>(
+                         builder: (context, ConfigModel snapshot, child) {
+                           return Image.asset(
+                               ImageHelper.wrapAssets("ic_update${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
+                               width: 22,height: 22);
+                         }
+                     ),
+                  )
+                 )
                ],
                ),
              ),

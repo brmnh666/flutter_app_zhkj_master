@@ -19,6 +19,14 @@ class MyLoginPage extends StatefulWidget{
 class _MyLoginPage extends State<MyLoginPage>{
   TextEditingController controller_username=TextEditingController();
   TextEditingController controller_password=TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller_username.text="18892621501";
+    controller_password.text="667675";
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +46,7 @@ class _MyLoginPage extends State<MyLoginPage>{
           Container(
             margin: EdgeInsets.only(top:30,left: 10,right: 10,bottom: 5),
             child:   TextField(
+
               //控制器 可以获取内容
               controller: controller_username,
               // controller: controller, //给TextField设置装饰（形状等）

@@ -653,53 +653,53 @@ class _MyUpdateServicePage extends State<MyUpdateServicePage>{
 
   /*弹出的省的Widget*/
   Widget build_province_Widget() {
-    return
-      Container(
-       width: 150,
-       height: 200,
-       margin: EdgeInsets.only(left: 20),
-       padding: EdgeInsets.only(left: 10),
-       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(6)),
-           gradient: LinearGradient(
-               colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-           )
+    return Store.connect<ConfigModel>(
+          builder: (context, ConfigModel snapshot, child) {
+            return  Container(
+                width: 150,
+                height: 200,
+                margin: EdgeInsets.only(left: 20),
+                padding: EdgeInsets.only(left: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+                child:ListView.builder(
+                    itemCount:(list_province== null) ? 0 : list_province.length,
+                    itemBuilder:(BuildContext context,int index){
+                      return GestureDetector(
+                        child: Container(
+                          height: 30,
+                          child: Text(list_province[index].name,style: TextStyle(fontSize: 15,color: Colors.white),),
+                        ),
+                        onTap: (){
+                          setState(() {
+                            _province=list_province[index].name;
+                            _province_code=list_province[index].code;
+                            //选择省份市其他重置
 
-      ),
-          child:ListView.builder(
-                itemCount:(list_province== null) ? 0 : list_province.length,
-                itemBuilder:(BuildContext context,int index){
-                  return GestureDetector(
-                    child: Container(
-                      height: 30,
-                      child: Text(list_province[index].name,style: TextStyle(fontSize: 15,color: Colors.white),),
-                    ),
-                    onTap: (){
-                      setState(() {
-                        _province=list_province[index].name;
-                        _province_code=list_province[index].code;
-                        //选择省份市其他重置
+                            _city_code=null;
+                            _area_code=null;
+                            _district_code=null;
 
-                        _city_code=null;
-                        _area_code=null;
-                        _district_code=null;
+                            _city="市";
+                            _area="区";
+                            _district="街道";
+                          });
 
-                        _city="市";
-                        _area="区";
-                        _district="街道";
-                      });
+                          /*选择了省 确定市*/
+                          _GetCity(list_province[index].code);
+                          Navigator.pop(context);
+                        },
+                      );
 
-                      /*选择了省 确定市*/
-                      _GetCity(list_province[index].code);
-                      Navigator.pop(context);
-                    },
-                  );
-
-                }
-            )
-     );
-
-
+                    }
+                )
+            );
+          }
+      );
      }
 
   /*弹出的市区街道的Widget*/
@@ -720,66 +720,71 @@ class _MyUpdateServicePage extends State<MyUpdateServicePage>{
         maginleft=180;
         break;
     }
-    return
-      ConstrainedBox(
+    return ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 200,minHeight: 50),
-        child: Container(
-          width: 150,
-          margin: EdgeInsets.only(left: maginleft,right: 10),
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(6)),
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-          child:
-          ListView.builder(
-              itemCount:  (list== null) ? 0 : list.length,
-              itemBuilder:(BuildContext context,int index){
-                return
-                  GestureDetector(
-                    child: Container(
-                      height: 38,
-                      child: Text(list[index].name,style: TextStyle(fontSize: 15,color: Colors.white),),
-                    ),
-                    onTap: (){
-                      setState(() {
-                        /*判断是哪个弹框*/
-                        switch(type){
-                          case "市":
-                            _city=list[index].name;
-                            _city_code=list[index].code;
+        child:Store.connect<ConfigModel>(
+            builder: (context, ConfigModel snapshot, child) {
+              return  Container(
+                width: 150,
+                margin: EdgeInsets.only(left: maginleft,right: 10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    gradient: LinearGradient(
+                        colors: ThemeUtil.setActionBar(snapshot.theme)
+                    )
+                ),
+                child:
+                ListView.builder(
+                    itemCount:  (list== null) ? 0 : list.length,
+                    itemBuilder:(BuildContext context,int index){
+                      return
+                        GestureDetector(
+                          child: Container(
+                            height: 38,
+                            child: Text(list[index].name,style: TextStyle(fontSize: 15,color: Colors.white),),
+                          ),
+                          onTap: (){
+                            setState(() {
+                              /*判断是哪个弹框*/
+                              switch(type){
+                                case "市":
+                                  _city=list[index].name;
+                                  _city_code=list[index].code;
 
-                            _GetArea(list[index].code);
-                            //选择市区和街道重置
-                            _area_code=null;
-                            _district_code=null;
+                                  _GetArea(list[index].code);
+                                  //选择市区和街道重置
+                                  _area_code=null;
+                                  _district_code=null;
 
-                            _area="区";
-                            _district="街道";
-                            break;
-                          case "区":
-                            _area=list[index].name;
-                            _area_code=list[index].code;
+                                  _area="区";
+                                  _district="街道";
+                                  break;
+                                case "区":
+                                  _area=list[index].name;
+                                  _area_code=list[index].code;
 
-                            _GetDistrict(list[index].code);
-                            //选择区 街道重置
-                            _district_code=null;
-                            _district="街道";
-                            break;
-                          case "街道":
-                            _district=list[index].name;
-                            _district_code=list[index].code;
-                            break;
-                        }
-                      });
-                      Navigator.pop(context);
-                    },
-                  );
-              }
-          ) ,
+                                  _GetDistrict(list[index].code);
+                                  //选择区 街道重置
+                                  _district_code=null;
+                                  _district="街道";
+                                  break;
+                                case "街道":
+                                  _district=list[index].name;
+                                  _district_code=list[index].code;
+                                  break;
+                              }
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                    }
+                ) ,
+              );
+            }
         ),
+
+
       );
 
 
