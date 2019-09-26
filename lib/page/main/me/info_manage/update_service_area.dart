@@ -499,9 +499,6 @@ class _MyUpdateServicePage extends State<MyUpdateServicePage>{
                       );
                     }
                 ),
-
-
-
                 onTap: (){
                   //获取list中的省份市区街道 111-222-333-444用逗号隔开
                   if(list.length==0){

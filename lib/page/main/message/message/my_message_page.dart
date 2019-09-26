@@ -90,8 +90,6 @@ class _MessagePage extends State<MessagePage>{
             },
           ),
 
-
-
           /*交易信息*/
           //255,133,24
           GestureDetector(

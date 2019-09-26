@@ -28,6 +28,9 @@ class Routes{
   static String aboutme="/aboutme";
   static String setting="/setting";
   static String feedback="/feedback";
+  static String workorder="/workorder";
+
+
   static void configureRoutes(Router router){
     router.notFoundHandler=new Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params){
@@ -59,7 +62,7 @@ class Routes{
     router.define(setting, handler: settingHandler);
     router.define(aboutme, handler: aboutmeHandler);
     router.define(feedback, handler: feedbackHandler);
-
+    router.define(workorder, handler: workorderHandler);
   }
 
 

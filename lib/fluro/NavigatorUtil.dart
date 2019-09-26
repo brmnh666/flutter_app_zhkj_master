@@ -197,4 +197,13 @@ class NavigatorUtil{
         transition: TransitionType.inFromRight);
   }
 
+
+  ///跳转到我的工单
+  static void goWorkOrderPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.workorder,
+        replace: false,
+        transition: TransitionType.fadeIn);
+  }
 }

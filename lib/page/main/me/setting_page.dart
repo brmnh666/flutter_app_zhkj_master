@@ -3,6 +3,7 @@ import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
 import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget{
   @override
@@ -327,15 +328,13 @@ class _SettingPage extends State<SettingPage>{
         ),
        child:Text(strColor,style: TextStyle(fontSize: 12,color: Colors.white))
       ),
-      onTap: () {
+      onTap: () async{
           setState(() {
             Store.value<ConfigModel>(context).changeTheme(color);
             /*将所选的颜色存入sp中*/
-            //SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-            //sharedPreferences.setString("Theme", color);
           });
-
-
+        SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+        sharedPreferences.setString("Theme", color);
       },
     );
 

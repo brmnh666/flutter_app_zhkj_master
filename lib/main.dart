@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -167,7 +168,7 @@ class _BottomBarPage extends State<BottomBarPage>{
              child: Icon(
                  Icons.add),
              onPressed: (){
-               Fluttertoast.showToast(msg: "未开发");
+               NavigatorUtil.goWorkOrderPage(context);
              }),
          //其他菜单栏
          bottomNavigationBar: BottomAppBar(

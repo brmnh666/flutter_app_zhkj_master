@@ -6,6 +6,7 @@ import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
 import 'package:flutter_app_zhkj_master/provider/index.dart';
 import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
+import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -93,15 +94,20 @@ class _MyLoginPage extends State<MyLoginPage>{
 
           /*登录*/
           GestureDetector(
-            child: Container(
-              child:Center(child:Text("登录",style: TextStyle(fontSize: 19,color: Colors.white))),
-              padding: EdgeInsets.only(top: 13,bottom: 12),
-              width: double.infinity,
-              margin: EdgeInsets.only(left: 10,right: 10,top: 10),
-              decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.all(Radius.circular(5))
-              ),
+            child:
+            Store.connect<ConfigModel>(
+                builder: (context, ConfigModel snapshot, child) {
+                  return  Container(
+                    child:Center(child:Text("登录",style: TextStyle(fontSize: 19,color: Colors.white))),
+                    padding: EdgeInsets.only(top: 13,bottom: 12),
+                    width: double.infinity,
+                    margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                    decoration: BoxDecoration(
+                        color: ThemeUtil.SetFontColor(snapshot.theme),
+                        borderRadius: BorderRadius.all(Radius.circular(5))
+                    ),
+                  );
+                }
             ),
             onTap: ()
             {
@@ -146,9 +152,6 @@ class _MyLoginPage extends State<MyLoginPage>{
           Fluttertoast.showToast(msg: "登陆成功");
           sharedPreferences.setString("userName",userName);
           sharedPreferences.setString("adminToken",baseResponse.data.item2);
-          Store.value<ConfigModel>(context)
-              .initTheme("blue");
-
           /*跳到主界面*/
            NavigatorUtil.goMainPage(context);
          }else{

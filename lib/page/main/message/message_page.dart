@@ -39,11 +39,12 @@ class _MyHomeItemPage extends State<MyMessageItemPage>{
                 child:Text("通知")),
           ],
         ));
+
+
     pages= List()..add(MessagePage())..add(NotifucationPage());
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return DefaultTabController(
           length: 2,
           child:Scaffold(
@@ -61,7 +62,8 @@ class _MyHomeItemPage extends State<MyMessageItemPage>{
                     }
                 ),
 
-                bottom: TabBar(tabs: title,
+                bottom: TabBar(
+                  tabs: title,
                   labelColor: Colors.white,
                   labelStyle: TextStyle(fontSize: 20),
                   labelPadding: EdgeInsets.only(bottom: 10),
@@ -75,7 +77,8 @@ class _MyHomeItemPage extends State<MyMessageItemPage>{
               body: TabBarView(
                 children: pages,
               )
-          ));
+          )
+    );
 
 
   }

@@ -20,6 +20,8 @@ import 'package:flutter_app_zhkj_master/page/main/me/setting_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/message/message/my_message_list_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/message/message/my_transaction_list_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/message/notification/my_notifucation_list_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/workorder/received_page.dart';
+import 'package:flutter_app_zhkj_master/page/main/workorder/workorder_page.dart';
 import 'package:flutter_app_zhkj_master/page/splash_page.dart';
 import 'package:flutter_app_zhkj_master/page/web_page.dart';
 
@@ -181,5 +183,12 @@ var aboutmeHandler=Handler(
 var feedbackHandler=Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params){
       return FeedbackPage();
+    }
+);
+
+///跳转的我的工单
+var workorderHandler=Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params){
+      return WorkorderPage();
     }
 );

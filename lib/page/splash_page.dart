@@ -2,7 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
+import 'package:flutter_app_zhkj_master/provider/index.dart';
+import 'package:flutter_app_zhkj_master/provider/model/ConfigModel.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget{
   @override
@@ -13,8 +16,18 @@ class SplashPage extends StatefulWidget{
 }
 class _SplashPage extends State<SplashPage>{
 
+  _getTheme() async{
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("Theme")==null){
+      sharedPreferences.setString("Theme", "blue");
+    }
+    Store.value<ConfigModel>(context)
+        .initTheme(sharedPreferences.getString("Theme"));
+  }
+
   @override
   void initState() {
+    _getTheme();
    //2秒后跳到主页面
    Observable.timer(0, Duration(seconds: 2)).listen((_){
      NavigatorUtil.goLoginPage(context);

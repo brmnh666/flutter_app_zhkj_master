@@ -129,7 +129,12 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                          child:    Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset(ImageHelper.wrapAssets("icon_home_sheet.png"),width: 23,height: 23,),
+                            Store.connect<ConfigModel>(
+                                builder: (context, ConfigModel snapshot, child) {
+                                  return Image.asset(ImageHelper.wrapAssets("icon_home_sheet${ThemeUtil.SetPhotoColor(snapshot.theme)}.png"),
+                                      width: 23,height: 23);
+                                }
+                            ),
                             Text("实时新订单",style: TextStyle(fontSize: 17),)
                           ],
                           )
@@ -334,7 +339,7 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                             ),     
                        ):
                        ListView.builder(
-                           itemCount:  (list_work.length==0) ? 0 : list_work.length,
+                           itemCount:  (list_work.length==0)?0:list_work.length,
                            itemBuilder: (BuildContext context,int index){//item构造器
                              return Container(
                                margin: EdgeInsets.only(left: 10,right: 10,top: 10),
@@ -410,9 +415,14 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                          child:
                                          GestureDetector(
                                            child:   Container(
-                                               child: Image.asset(ImageHelper.wrapAssets("icon_home_grabsheet.png"),width: 51,height: 51,),
+                                               child:Store.connect<ConfigModel>(
+                                                   builder: (context, ConfigModel snapshot, child) {
+                                                     return Image.asset(ImageHelper.wrapAssets("icon_home_grabsheet${ThemeUtil.SetPhotoColor(snapshot.theme)}.png")
+                                                         ,width: 51,height: 51);
+                                                   }
+                                               ),
                                                margin: EdgeInsets.only(bottom: 10,right: 10)),
-                                           onTap: (){//点击接单按钮
+                                              onTap: (){//点击接单按钮
                                              _GrabSheet(list_work[index].orderID.toString(),index);
                                            },
                                          )

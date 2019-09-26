@@ -32,11 +32,6 @@ class MyInfoManagePage extends StatefulWidget{
 
 class _MyInfoManagePage extends State<MyInfoManagePage>{
 
-     @override
-    void dispose() {
-    super.dispose();
-   // GlobalEventBus().eventBus.destroy();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,14 +62,6 @@ class _MyInfoManagePage extends State<MyInfoManagePage>{
               );
             }
         ),
-      /*  Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.cyan,Colors.blue,Colors.blueAccent,Colors.blue,Colors.cyan]
-              )
-          ),
-        ) ,
-        */
       ),
       body:
       //滚动
