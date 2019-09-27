@@ -141,9 +141,7 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                          ),
                         flex: 1,
                       ),
-
                       /*点击刷新新工单*/
-
                    Expanded(
                          child:
                          Padding(padding: EdgeInsets.only(bottom: 10),
@@ -280,9 +278,6 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                     } ,
                                   ),
                                 ),
-
-
-
 //                               /*西瓜币余额*/
                                 Container(
                                   margin: EdgeInsets.only(left: 10,top: 5),

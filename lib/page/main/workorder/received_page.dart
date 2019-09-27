@@ -161,7 +161,7 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
                            borderRadius: BorderRadius.all(Radius.circular(3))
                          ),
                          padding: EdgeInsets.only(left: 3,right: 3,top: 1,bottom: 1),
-                         child: Text("安装/保内",style: TextStyle(color: Colors.white,fontSize: 8)),
+                         child: Text("${_list_work[index].typeName}/${_list_work[index].guarantee=='Y'?'保内':'保外'}",style: TextStyle(color: Colors.white,fontSize: 8)),
                        ),
                        Expanded(child: Container(
                          alignment: Alignment.centerRight,
@@ -171,7 +171,6 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
                      ],
                    ),
                  ),
-
                  /*第二行*/
                  Container(
                    height: 110,
@@ -189,16 +188,15 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
                              child:Text("${_list_work[index].memo}",
                              style: TextStyle(fontSize: 19)),
                            )
-
-
                        ),
-                           Expanded(flex: 1,child: Row(
-                             children: <Widget>[
-                               /*距离*/
-                               Image.asset(ImageHelper.wrapAssets("icon_loaction.png")
+                           Expanded(flex:1,
+                               child: Row(
+                               children: <Widget>[
+                                /*距离*/
+                                 Image.asset(ImageHelper.wrapAssets("icon_loaction.png")
                                  ,width: 14,height: 14),
-                              Padding(padding: EdgeInsets.only(left: 5),
-                                  child: Text("距离 ${_list_work[index].distance}Km",style: TextStyle(fontSize:14,color: Color.fromARGB(205, 115,115,115))
+                                   Padding(padding: EdgeInsets.only(left: 5),
+                                      child: Text("距离 ${_list_work[index].distance}Km",style: TextStyle(fontSize:14,color: Color.fromARGB(205, 115,115,115))
                                   )
                                ),
 

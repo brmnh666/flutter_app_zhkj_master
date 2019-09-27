@@ -286,7 +286,7 @@ class _RechargePage extends State<RechargePage>{
                             return;
                           }else{
                             SpHelper.getUserName().then((username)=>
-                            _GetWXOrderStr(username, _recharge_money)
+                            _GetWXOrderStr(username, _recharge_money.replaceAll(",", ""))
                             );
                           }
 
