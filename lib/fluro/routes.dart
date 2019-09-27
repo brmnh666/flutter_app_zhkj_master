@@ -29,7 +29,8 @@ class Routes{
   static String setting="/setting";
   static String feedback="/feedback";
   static String workorder="/workorder";
-
+  static String loginmain="/loginmain";
+  static String regist="/regist";
 
   static void configureRoutes(Router router){
     router.notFoundHandler=new Handler(
@@ -63,6 +64,8 @@ class Routes{
     router.define(aboutme, handler: aboutmeHandler);
     router.define(feedback, handler: feedbackHandler);
     router.define(workorder, handler: workorderHandler);
+    router.define(loginmain, handler: loginmainHandler);
+    router.define(regist, handler: registHandler);
   }
 
 

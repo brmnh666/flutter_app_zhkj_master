@@ -3,6 +3,8 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_zhkj_master/page/certification_page.dart';
 import 'package:flutter_app_zhkj_master/page/login.dart';
+import 'package:flutter_app_zhkj_master/page/login/code_regist_page.dart';
+import 'package:flutter_app_zhkj_master/page/login/login_main_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/about_us/about_me_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/about_us/feedback_page.dart';
 import 'package:flutter_app_zhkj_master/page/main/me/bypass_account_page.dart';
@@ -40,6 +42,14 @@ var loginHandler =Handler(
       return MyLoginPage();
     }
 );
+
+///跳转的登陆主界面
+var loginmainHandler=Handler(
+    handlerFunc:  (BuildContext context, Map<String, List<String>> params){
+      return LoginMainPage();
+    }
+);
+
 
 /// 跳转到主页
 var homeHandler=Handler(
@@ -190,5 +200,11 @@ var feedbackHandler=Handler(
 var workorderHandler=Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params){
       return WorkorderPage();
+    }
+);
+
+var registHandler=Handler(
+    handlerFunc:  (BuildContext context, Map<String, List<String>> params){
+      return RegistPage();
     }
 );

@@ -25,16 +25,22 @@ class NavigatorUtil{
   /// 跳转到登录界面
   static void goLoginPage(BuildContext context){
     /// Routes.home 路由地址
-    /// replace：true 就是将 splash 页面给移除掉了，这点后退键的时候就不会再出现Splash页面
     Application.router.navigateTo(context, Routes.login,replace: true);
 
   }
+  ///跳转到登陆主界面
+  static void goLoginMainPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.loginmain,
+        replace: true);
+  }
+
 
 
   /// 跳转到主页面
   static void goMainPage(BuildContext context){
     /// Routes.home 路由地址
-    /// replace：true 就是将 splash 页面给移除掉了，这点后退键的时候就不会再出现Splash页面
     Application.router.navigateTo(context, Routes.main,replace: true);
   }
 
@@ -206,4 +212,15 @@ class NavigatorUtil{
         replace: false,
         transition: TransitionType.fadeIn);
   }
+
+
+  ///跳转到注册界面
+  static void goRegistPage(BuildContext context){
+    Application.router.navigateTo(
+        context,
+        Routes.regist,
+        replace: false,
+        transition: TransitionType.fadeIn);
+  }
+
 }

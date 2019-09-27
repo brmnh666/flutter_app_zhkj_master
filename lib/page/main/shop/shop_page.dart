@@ -22,26 +22,7 @@ class _MyShopItemPage extends State<MyShopItemPage>{
     return Scaffold(
       body:
       Center(
-        child:
-        Column(
-          children: <Widget>[
-            Store.connect<UserModel>(
-                builder: (context, UserModel snapshot, child) {
-                  return Text(
-                      '${snapshot.username}'
-                  );
-                }
-            ),
-            Store.connect<ConfigModel>(
-                builder: (context,ConfigModel snapshot,child){
-                  return Text(
-                      "${snapshot.theme}"
-                  );
-                }
-            ),
-            Text(Store.value<ConfigModel>(context).theme)
-          ],
-        ),
+        child: Text("shop")
       )
 
     );

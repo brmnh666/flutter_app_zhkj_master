@@ -28,9 +28,9 @@ class _SplashPage extends State<SplashPage>{
   @override
   void initState() {
     _getTheme();
-   //2秒后跳到主页面
-   Observable.timer(0, Duration(seconds: 2)).listen((_){
-     NavigatorUtil.goLoginPage(context);
+    //2秒后跳到主页面
+    Observable.timer(0, Duration(seconds: 2)).listen((_){
+     NavigatorUtil.goLoginMainPage(context);
    });
     super.initState();
   }
@@ -39,8 +39,7 @@ class _SplashPage extends State<SplashPage>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body:
-      Container(
+      body:Container(
         width: double.infinity,
         height: double.infinity,
         child:Image.asset(ImageHelper.wrapAssets("icon_splash.png"),

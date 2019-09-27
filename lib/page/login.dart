@@ -45,8 +45,7 @@ class _MyLoginPage extends State<MyLoginPage>{
            /*输入手机号*/
           Container(
             margin: EdgeInsets.only(top:30,left: 10,right: 10,bottom: 5),
-            child:   TextField(
-
+            child:TextField(
               //控制器 可以获取内容
               controller: controller_username,
               // controller: controller, //给TextField设置装饰（形状等）

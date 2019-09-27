@@ -370,7 +370,6 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                      ]
                                      ),
                                    ),
-
                                    /*第二行*/
                                    Row(children: <Widget>[
                                      /*安装维修物品和故障原因和地址*/
@@ -396,7 +395,6 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                              Container(
                                                margin: EdgeInsets.only(left: 10,top: 10,bottom: 15),
                                                child: Text("${list_work[index].address}",style: TextStyle(fontSize: 14)),
-
                                              )
 
                                            ],
