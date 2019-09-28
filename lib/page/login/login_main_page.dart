@@ -295,7 +295,7 @@ class _LoginMainPage extends State<LoginMainPage>{
                               );
                             }
                         );
-                        setState(() {
+                        setState((){
                           _defaultColor=Color.fromARGB(255, 88,188,71);
                           _isuser_login=false;
                           btn_str="手机号注册";
