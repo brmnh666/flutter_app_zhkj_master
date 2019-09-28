@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-#import "FlutterAlipayPlugin.h"
+import "FlutterAlipayPlugin.h"
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {

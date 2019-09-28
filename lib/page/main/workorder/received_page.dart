@@ -249,13 +249,11 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
 
                  /*第四行*/
                  Container(
-                   height: 45,
                    width: double.infinity,
                    child: Row(
                      children: <Widget>[
                        /*预约失败*/
                        Expanded(child:
-
                        GestureDetector(
                          child:Container(
                            alignment: Alignment.center,
@@ -414,7 +412,7 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
                  child:Column(children: <Widget>[
                    Image.asset(ImageHelper.wrapAssets(photo),width: 30,height: 30),
                    Padding(padding: EdgeInsets.only(top: 5),
-                     child:Text(content,style: TextStyle(color: Colors.white,fontSize: 12)
+                     child:Text(content,style: TextStyle(color: Colors.white,fontSize: 10)
                      )
                      ,)
                  ],
@@ -439,7 +437,7 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
                      Image.asset(ImageHelper.wrapAssets(photo),width: 30,height: 30),
                      Padding(
                        padding: EdgeInsets.only(top: 5),
-                       child:Text(content,style: TextStyle(color: Colors.white,fontSize: 12)),
+                       child:Text(content,style: TextStyle(color: Colors.white,fontSize: 10)),
                      )
                    ],
                    )
