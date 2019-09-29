@@ -5,7 +5,6 @@ import 'package:flutter_app_zhkj_master/bean/base_response.dart';
 import 'package:flutter_app_zhkj_master/bean/get_work_response.dart';
 import 'package:flutter_app_zhkj_master/bean/info_result.dart';
 import 'package:flutter_app_zhkj_master/config/config.dart';
-import 'package:flutter_app_zhkj_master/eventbus/global_eventbus.dart';
 import 'package:flutter_app_zhkj_master/fluro/NavigatorUtil.dart';
 import 'package:flutter_app_zhkj_master/http/http_utils.dart';
 import 'package:flutter_app_zhkj_master/manager/resource_mananger.dart';
@@ -16,7 +15,6 @@ import 'package:flutter_app_zhkj_master/provider/sp_helper.dart';
 import 'package:flutter_app_zhkj_master/provider/theme_util.dart';
 import 'package:flutter_app_zhkj_master/util/my_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
@@ -47,7 +45,6 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
   @override
   void dispose() {
     super.dispose();
-    GlobalEventBus().eventBus.destroy();
   }
 
   @override
@@ -181,8 +178,14 @@ class _MyHomeItemPage extends State<MyHomeItemPage>{
                                    child:
                                    Store.connect<UserModel>(
                                        builder: (context, UserModel snapshot, child) {
+                                         String head="time.jpg";
+                                         if(snapshot.avator==null){
+                                           print("头像为空");
+                                         }else{
+                                           head=snapshot.avator;
+                                         }
                                          return Image.network(
-                                           Config.HEAD_URL+"${snapshot.avator}",
+                                           Config.HEAD_URL+"${head}",
                                            width: 80,
                                            height: 80,
                                            fit: BoxFit.fill, //图片填充方式

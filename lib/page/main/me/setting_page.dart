@@ -260,8 +260,8 @@ class _SettingPage extends State<SettingPage>{
                                    border: Border.all(color: Colors.black,width: 0.2)
                                ),
                                child:
-                               Padding(padding: EdgeInsets.all(5),
-                                 child:Text("更多主题敬请期待",style: TextStyle(fontSize: 11))
+                               Padding(padding: EdgeInsets.all(6),
+                                 child:Text("更多主题敬请期待",style: TextStyle(fontSize: 10))
                                ),
                              ),
                            )

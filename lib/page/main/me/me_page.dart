@@ -58,8 +58,14 @@ class _MyMeItemPage extends State<MyMeItemPage>{
                                     child:
                                     Store.connect<UserModel>(
                                         builder: (context, UserModel snapshot, child) {
+                                          String head="time.jpg";
+                                          if(snapshot.avator==null){
+                                            print("头像为空");
+                                          }else{
+                                            head=snapshot.avator;
+                                          }
                                           return Image.network(
-                                            Config.HEAD_URL+"${snapshot.avator}",
+                                            Config.HEAD_URL+"${head}",
                                             width: 70,
                                             height: 70,
                                             fit: BoxFit.fill, //图片填充方式
