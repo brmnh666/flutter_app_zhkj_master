@@ -240,27 +240,33 @@ class _SettingPage extends State<SettingPage>{
                      child:Row(
                        children: <Widget>[
                          Expanded(flex:1,child:
-                         selecttheme_item(0, "blue","默认蓝")
+                          selecttheme_item(0, "blue","默认蓝")
                          ),
                          Expanded(flex:1,child:
-                         selecttheme_item(1, "yellow","柠檬黄")),
+                          selecttheme_item(1, "yellow","柠檬黄")),
                          Expanded(flex:1,child:
-                         selecttheme_item(2, "green","薄荷绿")
+                          selecttheme_item(2, "green","薄荷绿")
                          ),
                          Expanded(flex:1,child:
-                         Container(
-                           width: 56,
-                           height: 56,
-                           alignment: Alignment.center,
-                           padding: EdgeInsets.all(8),
-                           margin: EdgeInsets.only(left: 14,right: 14),
-                           decoration: BoxDecoration(
-                               color: Colors.white,
-                               borderRadius: BorderRadius.all(Radius.circular(28)),
-                               border: Border.all(color: Colors.black,width: 0.2)
+                          Container(
+                           child: Center(
+                             child: Container(
+                               alignment: Alignment.center,
+                               width: 58,
+                               height: 58,
+                               decoration: BoxDecoration(
+                                   color: Colors.white,
+                                   borderRadius: BorderRadius.all(Radius.circular(28)),
+                                   border: Border.all(color: Colors.black,width: 0.2)
+                               ),
+                               child:
+                               Padding(padding: EdgeInsets.all(5),
+                                 child:Text("更多主题敬请期待",style: TextStyle(fontSize: 11))
+                               ),
+                             ),
+                           )
 
-                           ),
-                           child: Text("更多主题敬请期待",style: TextStyle(fontSize: 10)),
+
                          )
 
                          ),
@@ -311,36 +317,42 @@ class _SettingPage extends State<SettingPage>{
     return index==ThemeUtil.GetColorLocation(Store.value<ConfigModel>(context).theme)?
         //选中情况
       Container(
-        width: 56,
-        height: 56,
-          alignment: Alignment.center,
-        margin: EdgeInsets.only(left: 14,right: 14),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(28)),
-          color:_getcolor(color),
-            // 生成俩层阴影，一层绿，一层黄， 阴影位置由offset决定,阴影模糊层度由blurRadius大小决定（大就更透明更扩散），阴影模糊大小由spreadRadius决定
-            boxShadow: [BoxShadow(color: Colors.grey,
-                       offset: Offset(0.0, 0.0),
-                       blurRadius: 2.0,
-                       spreadRadius: 1.0
-                        ),
-                       ],
-
+          child: Center(
+            child: Container(
+            alignment: Alignment.center,
+            width: 58,
+            height: 58,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(29)),
+              color:_getcolor(color),
+              // 生成俩层阴影，一层绿，一层黄， 阴影位置由offset决定,阴影模糊层度由blurRadius大小决定（大就更透明更扩散），阴影模糊大小由spreadRadius决定
+              boxShadow: [BoxShadow(color: Colors.grey,
+                  offset: Offset(0.0, 0.0),
+                  blurRadius: 2.0,
+                  spreadRadius: 1.0
+              ),
+              ],
+            ),
+             child:Text(strColor,style: TextStyle(fontSize: 13,color: Colors.white,fontWeight: FontWeight.w600))
+          )
         ),
-        child:Text(strColor,style: TextStyle(fontSize: 13,color: Colors.white,fontWeight: FontWeight.w600))
+        //
     ):
     //未选中情况
     GestureDetector(
       child: Container(
-        alignment: Alignment.center,
-        width: 56,
-        height: 56,
-        margin: EdgeInsets.only(left: 14,right: 14),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(28)),
-          color:_getcolor(color),
-        ),
-       child:Text(strColor,style: TextStyle(fontSize: 12,color: Colors.white))
+        child:Center(
+          child: Container(
+            alignment: Alignment.center,
+           width: 58,
+           height: 58,
+           decoration: BoxDecoration(
+             borderRadius: BorderRadius.all(Radius.circular(28)),
+             color:_getcolor(color),
+           ),
+            child: Text(strColor,style: TextStyle(fontSize: 12,color: Colors.white)),
+         ),
+       )
       ),
       onTap: () async{
           setState(() {

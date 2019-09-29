@@ -20,7 +20,7 @@ class _MessagePage extends State<MessagePage>{
           //0,191,150
           GestureDetector(
             child:   Container(
-              height: 72,
+              height: 75,
               margin: EdgeInsets.only(top: 12,left: 10,right: 10,bottom: 10),
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -65,13 +65,18 @@ class _MessagePage extends State<MessagePage>{
                   flex: 1,
                   child:
                   Container(
-                    margin: EdgeInsets.only(top: 31,bottom: 31,left: 12,right: 12),
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        border: Border.all(color: Colors.deepPurple,width: 0.8)
-                    ),
                     alignment: Alignment.center,
+                    child: Center(
+                     child: Container(
+                       width: 12,
+                       height:12 ,
+                       decoration: BoxDecoration(
+                         border: Border.all(width: 0.8,color: Colors.grey),
+                         color: Colors.red,
+                         borderRadius: BorderRadius.all(Radius.circular(6))
+                       ),
+                     ),
+                   ),
                    // child: Text("+",style: TextStyle(color: Colors.white,fontSize: 13,fontWeight: FontWeight.w500),),
                   ),
 
@@ -94,7 +99,7 @@ class _MessagePage extends State<MessagePage>{
           //255,133,24
           GestureDetector(
             child:Container(
-              height: 72,
+              height: 75,
               margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -139,14 +144,19 @@ class _MessagePage extends State<MessagePage>{
                   flex: 1,
                   child:
                   Container(
-                    margin: EdgeInsets.only(top: 31,bottom: 31,left: 12,right: 12),
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        border: Border.all(color: Colors.deepPurple,width: 0.8)
-                    ),
                     alignment: Alignment.center,
-                   // child: Text("+",style: TextStyle(color: Colors.white,fontSize: 13,fontWeight: FontWeight.w500),),
+                    child: Center(
+                      child: Container(
+                        width: 12,
+                        height:12 ,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 0.8,color: Colors.grey),
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(6))
+                        ),
+                      ),
+                    ),
+
                   ),
 
                 ),
@@ -170,7 +180,7 @@ class _MessagePage extends State<MessagePage>{
 
           GestureDetector(
             child:  Container(
-              height: 72,
+              height: 75,
               margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -215,13 +225,18 @@ class _MessagePage extends State<MessagePage>{
                   flex: 1,
                   child:
                   Container(
-                    margin: EdgeInsets.only(top: 31,bottom: 31,left: 12,right: 12),
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        border: Border.all(color: Colors.deepPurple,width: 0.8)
-                    ),
                     alignment: Alignment.center,
+                    child: Center(
+                      child: Container(
+                        width: 12,
+                        height:12 ,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 0.8,color: Colors.grey),
+                            color: Colors.red,
+                            borderRadius: BorderRadius.all(Radius.circular(6))
+                        ),
+                      ),
+                    ),
                    // child: Text("o",style: TextStyle(color: Colors.white,fontSize: 13,fontWeight: FontWeight.w500),),
                   ),
 
