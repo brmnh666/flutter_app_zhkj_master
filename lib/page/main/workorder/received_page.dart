@@ -40,7 +40,7 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
                builder: (context, ConfigModel snapshot, child) {
                  return Container(
                      width: double.infinity,
-                     height: 210,
+                     height: 212,
                      margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                      decoration: BoxDecoration(
                          color: ThemeUtil.SetTransparencyColor(snapshot.theme),
@@ -140,7 +140,7 @@ class _ReceivedPage extends State<ReceivedPage> with AutomaticKeepAliveClientMix
               ):
              Container(
              width: double.infinity,
-             height: 210,
+             height: 212,
              decoration: BoxDecoration(
                color: Colors.white,
                borderRadius: BorderRadius.all(Radius.circular(8))
