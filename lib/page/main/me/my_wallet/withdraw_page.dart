@@ -137,7 +137,7 @@ class WithdrawPage extends StatefulWidget{
           Container(
             margin: EdgeInsets.only(top: 14),
             width: double.infinity,
-            height: 140,
+            height: 150,
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +166,7 @@ class WithdrawPage extends StatefulWidget{
                         Expanded(
                            child:Container(
                              alignment: Alignment.centerLeft,
-                             height: 40,
+                             height: 35,
                              margin: EdgeInsets.only(left: 10,right: 10),
                              child: Store.connect<ConfigModel>(
                                  builder: (context, ConfigModel snapshot, child) {
@@ -210,7 +210,7 @@ class WithdrawPage extends StatefulWidget{
                   margin: EdgeInsets.only(left: 10,right: 10,top: 10),
                   height: 0.2,
                 ),
-                Padding(padding: EdgeInsets.only(left: 10,top: 12),
+                Padding(padding: EdgeInsets.only(left: 10,top: 15),
                   child: Text("可提现余额${_canwithdraw}元",style: TextStyle(fontSize: 14,color: Colors.grey))
                 )
               ],
